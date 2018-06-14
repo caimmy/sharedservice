@@ -4,22 +4,20 @@
    File Name：     service
    Description:
    Author:         caimmy
-   date：          2018/5/28
+   date：          2018/6/14
 -------------------------------------------------
    Change Activity:
-                   2018/5/28
+                   2018/6/14
 -------------------------------------------------
 """
 __author__ = 'caimmy'
 
-from lib import SSWebRequestHandler
+
 import bp
 
-class IndexRequest(SSWebRequestHandler):
-    def get(self):
-        self.write("<h3>Welcome to Examination application</h3>")
+from admin.authentication import LoginRequestHandler
 
 def CreateBlueprint():
-    return bp.Blueprint("exam", [
-        (r"/?", IndexRequest)
+    return bp.Blueprint(r'admin', [
+        (r'/?', LoginRequestHandler)
     ])

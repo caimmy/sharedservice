@@ -20,8 +20,15 @@ import tornado.log
 from lib import SSApplication
 import im.service
 import exam.service
+import admin.service
 
 from config import DEBUG_MODE
+
+APP_SETTINGS = {
+    "debug": True,
+    "cookie_secret": 'caimmy_9527',
+    "login_url": 'admin/login'
+}
 
 class DemoHandler(tornado.web.RequestHandler):
     def get(self):
@@ -32,9 +39,10 @@ def MakeApplication():
     '''
     :return: tornado.web.Application
     '''
-    app = SSApplication([], debug=DEBUG_MODE)
+    app = SSApplication([], **APP_SETTINGS)
     app.RegisterBlueprint(im.service.CreateBlueprint())
     app.RegisterBlueprint(exam.service.CreateBlueprint())
+    app.RegisterBlueprint(admin.service.CreateBlueprint())
     app.default_router.add_rules([(r"/?", DemoHandler)])
     return app
 

@@ -1,25 +1,21 @@
 # -*- coding: utf-8 -*-
 """
 -------------------------------------------------
-   File Name：     service
+   File Name：     authentication
    Description:
    Author:         caimmy
-   date：          2018/5/28
+   date：          2018/6/14
 -------------------------------------------------
    Change Activity:
-                   2018/5/28
+                   2018/6/14
 -------------------------------------------------
 """
 __author__ = 'caimmy'
 
 from lib import SSWebRequestHandler
-import bp
+from utils.wraps import request_authenticate
 
-class IndexRequest(SSWebRequestHandler):
+class LoginRequestHandler(SSWebRequestHandler):
+    @request_authenticate
     def get(self):
-        self.write("<h3>Welcome to Examination application</h3>")
-
-def CreateBlueprint():
-    return bp.Blueprint("exam", [
-        (r"/?", IndexRequest)
-    ])
+        return self.write("success")

@@ -12,15 +12,18 @@
 """
 __author__ = 'caimmy'
 
-import tornado.web
 import tornado.log
+
+from lib import SSWebRequestHandler
 import bp
 
-class IndexHandler(tornado.web.RequestHandler):
-    def get(self):
-        tornado.log.app_log.debug("asdfadsasdfasd")
-        tornado.log.access_log.error("access asdfasdf")
-        tornado.log.gen_log.info("gen log asdfasdf")
+async def bbb(s):
+    tornado.log.gen_log.error(s)
+    return 1
+
+class IndexHandler(SSWebRequestHandler):
+    async def get(self):
+        tornado.log.gen_log.error("asdfasdfasdf")
         self.write("<h3>welcome to IM service</h3>")
 
 
