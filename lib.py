@@ -12,12 +12,20 @@
 """
 __author__ = 'caimmy'
 
+import json
 import tornado.web
+from sqlalchemy.orm import sessionmaker, scoped_session
+
+from models.mysql.db import engine
 
 def makeResponse(msg=''):
     return {'code': -1, 'msg': msg, 'success': False, 'data': None}
 
 class SSApplication(tornado.web.Application):
+
+    def __init__(self, handlers, **settings):
+        super(SSApplication, self).__init__(handlers, **settings)
+        self.db = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=True, expire_on_commit=False))
 
     def RegisterBlueprint(self, blueprint):
         '''
@@ -28,7 +36,23 @@ class SSApplication(tornado.web.Application):
 
 class SSWebRequestHandler(tornado.web.RequestHandler):
     version = 1.0
-    response = makeResponse()
+
+    def prepare(self):
+        self.response = makeResponse()
+
+    def get_current_user(self):
+        return self.get_secure_cookie('id')
+
+    @property
+    def db(self):
+        return self.application.db
+
+class SSWebDataRequestHandler(SSWebRequestHandler):
+
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with,authorization")
+        self.set_header('Access-Control-Allow-Methods', 'POST,GET')
 
     def changeResponse2Success(self, data=None):
         '''
@@ -37,6 +61,7 @@ class SSWebRequestHandler(tornado.web.RequestHandler):
         :return:
         '''
         self.response['code'] = 0
+        self.response['success'] = True
         self.response['msg'] = 'success'
         self.data = data
 
@@ -49,6 +74,9 @@ class SSWebRequestHandler(tornado.web.RequestHandler):
         self.response['code'] = code
         self.response['msg'] = msg
 
-
-    def get_current_user(self):
-        return self.get_secure_cookie('id')
+    def jsonResponse(self):
+        '''
+        已json格式输出响应
+        :return:
+        '''
+        return json.dumps(self.response)

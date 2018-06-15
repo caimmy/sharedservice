@@ -16,6 +16,11 @@ import functools
 from lib import makeResponse
 
 def request_authenticate(method):
+    '''
+    数据请求方式中判断用户是否登录
+    :param method:
+    :return:
+    '''
     @functools.wraps(method)
     def check_authentication(self, *args, **kwargs):
         if not self.current_user:
@@ -23,3 +28,20 @@ def request_authenticate(method):
         else:
             return method(self, *args, **kwargs)
     return check_authentication
+
+
+def jsonp(method):
+    '''
+    jsonp输出
+    :param method:
+    :return:
+    '''
+    @functools.wraps(method)
+    def jsonp_func(self, *args, **kwargs):
+        requestHandler = self
+        callback = requestHandler.get_argument('callback', False)
+        data = method(self, *args, **kwargs)
+        content = str(callback) + '(' + data + ')' if callback else data
+        requestHandler.write(content)
+        requestHandler.finish()
+    return jsonp_func

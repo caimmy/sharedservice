@@ -15,9 +15,11 @@ __author__ = 'caimmy'
 
 import bp
 
-from admin.authentication import LoginRequestHandler
+from admin.authentication import LoginRequestHandler, RegisterRequestHandler, IndexRequestHandler
 
 def CreateBlueprint():
     return bp.Blueprint(r'admin', [
-        (r'/?', LoginRequestHandler)
+        (r'/?', IndexRequestHandler),
+        (r'/register/?', RegisterRequestHandler),
+        (r'/login/?', LoginRequestHandler)
     ])

@@ -27,7 +27,8 @@ from config import DEBUG_MODE
 APP_SETTINGS = {
     "debug": True,
     "cookie_secret": 'caimmy_9527',
-    "login_url": 'admin/login'
+    "login_url": 'admin/login',
+    "xsrf_cookies": False
 }
 
 class DemoHandler(tornado.web.RequestHandler):

@@ -14,4 +14,9 @@ __author__ = 'caimmy'
 
 DEBUG_MODE      = True
 
+MYSQL_HOST      = '127.0.0.1'
+MYSQL_PORT      = 3306
+MYSQL_USER      = 'root'
+MYSQL_PAWD      = ''
+MYSQL_DBNAME    = 'ss'
 
