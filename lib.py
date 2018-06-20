@@ -15,6 +15,8 @@ __author__ = 'caimmy'
 import json
 import tornado.web
 from sqlalchemy.orm import sessionmaker, scoped_session
+from utils.tools import LoadYAML2Object
+from models.yaml import MimcConfig
 
 from models.mysql.db import engine
 
@@ -26,6 +28,7 @@ class SSApplication(tornado.web.Application):
     def __init__(self, handlers, **settings):
         super(SSApplication, self).__init__(handlers, **settings)
         self.db = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=True, expire_on_commit=False))
+        self.yaml = LoadYAML2Object('./config.yaml', MimcConfig())
 
     def RegisterBlueprint(self, blueprint):
         '''
@@ -46,6 +49,20 @@ class SSWebRequestHandler(tornado.web.RequestHandler):
     @property
     def db(self):
         return self.application.db
+
+    @property
+    def yaml(self):
+        '''
+        :return: im.MimcConfig
+        '''
+        return self.application.yaml
+
+    def getArgument_list(self, *args):
+        ret_arguments = []
+        for a in args:
+            ret_arguments.append(self.get_argument(a, None))
+        return ret_arguments
+
 
 class SSWebDataRequestHandler(SSWebRequestHandler):
 

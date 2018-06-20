@@ -14,6 +14,7 @@ __author__ = 'caimmy'
 import json
 import functools
 from lib import makeResponse
+from utils import ensureBytes, ensureString
 
 def request_authenticate(method):
     '''
@@ -41,7 +42,7 @@ def jsonp(method):
         requestHandler = self
         callback = requestHandler.get_argument('callback', False)
         data = method(self, *args, **kwargs)
-        content = str(callback) + '(' + data + ')' if callback else data
-        requestHandler.write(content)
+        content = str(callback) + '(' + ensureString(data) + ')' if callback else data
+        requestHandler.write(ensureBytes(content))
         requestHandler.finish()
     return jsonp_func

@@ -52,7 +52,7 @@ def init_logger():
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG if DEBUG_MODE else logging.WARNING)
     # TimeRotatingFile
-    th = handlers.TimedRotatingFileHandler('logs/app.log', interval=1, backupCount=5, encoding="utf-8")
+    th = handlers.TimedRotatingFileHandler('logs/app.log', when='h' if DEBUG_MODE else 'd', interval=1, backupCount= 5 if DEBUG_MODE else 1024, encoding="utf-8")
     th.setFormatter(fmt)
     # Console
     sh = logging.StreamHandler()
