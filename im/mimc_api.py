@@ -51,7 +51,7 @@ class ProxyPushP2PMessage(SSWebDataRequestHandler):
                 'toAccount': toAccount,
                 'msg': msg,
                 'msgType': '',
-                'fromResource': ''
+                'fromResource': 'modern'
             }
             code, result = mimcRequest(url, req_data)
             if 200 == code:
