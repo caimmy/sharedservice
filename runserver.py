@@ -12,6 +12,7 @@
 """
 __author__ = 'caimmy'
 
+import os
 import platform
 import logging
 from logging import handlers
@@ -22,13 +23,16 @@ import im.service
 import exam.service
 import admin.service
 
+from admin.uimodules import admin_ui
+
 from config import DEBUG_MODE
 
 APP_SETTINGS = {
     "debug": True,
     "cookie_secret": 'caimmy_9527',
-    "login_url": 'admin/login',
-    "xsrf_cookies": False
+    "xsrf_cookies": True,
+    "static_path": os.path.join(os.path.dirname(__file__), "static"),
+    "ui_modules": admin_ui
 }
 
 class DemoHandler(tornado.web.RequestHandler):
@@ -40,12 +44,17 @@ def MakeApplication():
     '''
     :return: tornado.web.Application
     '''
+    prehander_urls = mergeBlueprintUrls(im.service.CreateBlueprint(), exam.service.CreateBlueprint(), admin.service.CreateBlueprint())
     app = SSApplication([], **APP_SETTINGS)
-    app.RegisterBlueprint(im.service.CreateBlueprint())
-    app.RegisterBlueprint(exam.service.CreateBlueprint())
-    app.RegisterBlueprint(admin.service.CreateBlueprint())
+    app.default_router.add_rules(prehander_urls)
     app.default_router.add_rules([(r"/?", DemoHandler)])
     return app
+
+def mergeBlueprintUrls(*args):
+    url_lists = []
+    for service in args:
+        url_lists.extend(service.GetSubRouters())
+    return url_lists
 
 def init_logger():
     fmt = tornado.log.LogFormatter('%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s')

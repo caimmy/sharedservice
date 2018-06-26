@@ -15,6 +15,7 @@ import json
 import functools
 from lib import makeResponse
 from utils import ensureBytes, ensureString
+import tornado.routing
 
 def request_authenticate(method):
     '''
@@ -26,6 +27,20 @@ def request_authenticate(method):
     def check_authentication(self, *args, **kwargs):
         if not self.current_user:
             self.write(json.dumps(makeResponse('login first please')))
+        else:
+            return method(self, *args, **kwargs)
+    return check_authentication
+
+def web_authenticate(method):
+    '''
+    web请求方式中判定用户是否登录，如未登陆则自动跳转默认登录地址
+    :param method:
+    :return:
+    '''
+    @functools.wraps(method)
+    def check_authentication(self, *args, **kwargs):
+        if not self.current_user:
+            return self.redirect(self.reverse_url('login'))
         else:
             return method(self, *args, **kwargs)
     return check_authentication

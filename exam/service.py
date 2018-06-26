@@ -12,6 +12,7 @@
 """
 __author__ = 'caimmy'
 
+from tornado.web import url
 from lib import SSWebRequestHandler
 import bp
 
@@ -21,5 +22,5 @@ class IndexRequest(SSWebRequestHandler):
 
 def CreateBlueprint():
     return bp.Blueprint("exam", [
-        (r"/?", IndexRequest)
+        url(r"/?", IndexRequest)
     ])

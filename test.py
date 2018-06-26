@@ -15,6 +15,14 @@ __author__ = 'caimmy'
 import requests
 from utils.tools import LoadYAML2Object
 import yaml
+
+from tornado.web import url
+from tornado.web import RequestHandler
+
+class T(RequestHandler):
+    def get(self):
+        return self.write("sadfasdf")
+
 def sendP2PMsg(fromAccount, toAccount, content):
     url = 'https://mimc.chat.xiaomi.net/api/push/p2p/'
     data = {
@@ -53,4 +61,5 @@ def test(*args):
         print(a)
 
 if "__main__" == __name__:
-    sendP2PMsg('13308089446', '19981293007', 'ask发生了发就拉克丝解')
+    m = url(r"/t/?", T, name="asdfasdf")
+    print(m)

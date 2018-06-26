@@ -13,7 +13,7 @@
 __author__ = 'caimmy'
 
 import tornado.log
-
+from tornado.web import url
 from lib import SSWebRequestHandler
 import bp
 
@@ -35,7 +35,7 @@ def CreateBlueprint():
     :return:
     '''
     return bp.Blueprint("/im", [
-        (r"/?", IndexHandler),
-        (r"/fetchmimctoken/?", FetchMIMCToken),
-        (r"/p2p/?", ProxyPushP2PMessage)
+        url(r"/?", IndexHandler),
+        url(r"/fetchmimctoken/?", FetchMIMCToken),
+        url(r"/p2p/?", ProxyPushP2PMessage)
     ])

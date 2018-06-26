@@ -44,7 +44,26 @@ class SSWebRequestHandler(tornado.web.RequestHandler):
         self.response = makeResponse()
 
     def get_current_user(self):
-        return self.get_secure_cookie('id')
+        loginned_user = self.get_secure_cookie("user")
+        if loginned_user is not None:
+            return json.loads(loginned_user)
+        else:
+            return None
+
+    def Login(self, user):
+        '''
+        用户登录
+        :param user: dict
+        :return:
+        '''
+        self.set_secure_cookie("user", json.dumps(user))
+
+    def Loginout(self):
+        '''
+        注销用户会话
+        :return:
+        '''
+        self.clear_cookie("user")
 
     @property
     def db(self):

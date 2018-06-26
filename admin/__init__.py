@@ -11,3 +11,10 @@
 -------------------------------------------------
 """
 __author__ = 'caimmy'
+
+import os
+from lib import SSWebRequestHandler
+
+class AdminWebRequestHandler(SSWebRequestHandler):
+    def get_template_path(self):
+        return os.path.join(os.path.dirname(__file__), 'template')

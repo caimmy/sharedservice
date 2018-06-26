@@ -12,14 +12,17 @@
 """
 __author__ = 'caimmy'
 
-
+from tornado.web import url
 import bp
 
-from admin.authentication import LoginRequestHandler, RegisterRequestHandler, IndexRequestHandler
+from admin.authentication import LoginRequestHandler, RegisterRequestHandler, IndexRequestHandler, AdminloginRequestHandler, \
+    AdminlogoutRequestHandler
 
 def CreateBlueprint():
     return bp.Blueprint(r'admin', [
-        (r'/?', IndexRequestHandler),
-        (r'/register/?', RegisterRequestHandler),
-        (r'/login/?', LoginRequestHandler)
+        url(r'/?', IndexRequestHandler, name="admin_index"),
+        url(r'/register/?', RegisterRequestHandler),
+        (r'/login/?', LoginRequestHandler),
+        url(r'/adminlogin/?', AdminloginRequestHandler, name="login"),
+        url(r'/logout', AdminlogoutRequestHandler, name="logout")
     ])
