@@ -13,11 +13,12 @@
 __author__ = 'caimmy'
 
 from datetime import datetime
-from sqlalchemy import Column, Integer, VARCHAR, DateTime, Enum
+from sqlalchemy import Column, Integer, VARCHAR, DateTime, Enum, ForeignKey
+from sqlalchemy.orm import relationship
 from models.mysql.db import engine, Base
 from models import ENUM_VALID, ENUM_INVALID, ENUM_DELETE
 
-class User(Base):
+class PlatUser(Base):
     __tablename__   = 'plat_user'
     '''
     后台用户信息表
@@ -29,6 +30,10 @@ class User(Base):
     salt            = Column(VARCHAR(6), nullable=False)
     passwd          = Column(VARCHAR(128), nullable=False)
     create_tm       = Column(DateTime, default=datetime.now(), comment='账号创建时间')
+    ep              = Column(Integer, ForeignKey("enterprise.id"), nullable=False, index=True, comment="成员所属的企业编号")
+
+    enterprise      = relationship("Enterprise", backref="users")
+
 
     def getAttributes(self):
         '''
@@ -47,7 +52,7 @@ class Enterprise(Base):
     '''
     企业账号表
     '''
-    __tablename__   = 'enterprise_user'
+    __tablename__   = 'enterprise'
 
     id              = Column(Integer, primary_key=True, autoincrement=True)
     name            = Column(VARCHAR(128), nullable=False, comment='企业名称')
@@ -60,11 +65,11 @@ class Enterprise(Base):
 
     def __repr__(self):
         return '<<Table> Enterprise_user> : id: {_id}, name: {_name}, email: {_email}, create_tm: {_create_tm}, expire_tm: {_expire_tm}'.format(
-            _id = self.id,
-            _name = self.name,
-            _email = self.email,
-            _create_tm = self.create_tm,
-            _expire_tm = self.expire_tm
+            _id=self.id,
+            _name=self.name,
+            _email=self.email,
+            _create_tm=self.create_tm,
+            _expire_tm=self.expire_tm
         )
 
 class Customer(Base):
@@ -88,7 +93,3 @@ class Customer(Base):
             phone=self.phone,
             create_tm=self.create_tm
         )
-
-if __name__ == '__main__':
-    Base.metadata.create_all(engine)
-    print("ok")
