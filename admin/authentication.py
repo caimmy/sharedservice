@@ -14,7 +14,7 @@ __author__ = 'caimmy'
 
 from lib import SSWebDataRequestHandler
 from utils.wraps import web_authenticate, jsonp
-from models.mysql.tables import User
+from models.mysql.tables import PlatUser
 from admin import AdminWebRequestHandler
 
 class LoginRequestHandler(SSWebDataRequestHandler):
@@ -22,7 +22,7 @@ class LoginRequestHandler(SSWebDataRequestHandler):
     def get(self):
         phone   = self.get_argument('phone', '')
         pwd     = self.get_argument('pass', '')
-        user = self.db.query(User).filter(User.phone == phone).first()
+        user = self.db.query(PlatUser).filter(PlatUser.phone == phone).first()
         if user:
             self.changeResponse2Success(str(user).encode('utf-8'))
         else:
@@ -40,7 +40,7 @@ class AdminloginRequestHandler(AdminWebRequestHandler):
 
     def post(self):
         username, password = self.getArgument_list("username", "password")
-        user = self.db.query(User).filter(User.email==username).first()
+        user = self.db.query(PlatUser).filter(PlatUser.email==username).first()
         if user is None:
             return self.redirect(self.reverse_url("login"))
         else:
@@ -54,7 +54,7 @@ class AdminlogoutRequestHandler(AdminWebRequestHandler):
 
 class RegisterRequestHandler(SSWebDataRequestHandler):
     def get(self):
-        user = User()
+        user = PlatUser()
         user.name = '蔡淼'
         user.phone = '15902811426'
         user.salt = '123456'
