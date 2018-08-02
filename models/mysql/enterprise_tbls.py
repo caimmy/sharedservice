@@ -38,7 +38,6 @@ class MProduct(Base):
     def __repr__(self):
         return "<<m_product> id: {id}, name: {name}, label: {label} >".format(id=self.id, name=self.name, label=self.label)
 
-
 class ServiceRequirements(Base):
     """
     企业服务需求
@@ -59,3 +58,39 @@ class ServiceRequirements(Base):
         return "<<em_servicerequire> id: {id}, name: {name}, label: {label}, start_tm: {stm}, end_tm: {etm}".format(
             id=self.id, name=self.name, label=self.label, stm=self.start_tm, etm=self.end_tm
         )
+
+
+class ProductArticle(Base):
+    """
+    产品知识库（文章）
+    """
+    __tablename__ = "em_product_article"
+
+    id          = Column(Integer, primary_key=True, autoincrement=True)
+    title       = Column(VARCHAR(128), nullable=False, comment="文章标题")
+    content     = Column(TEXT, nullable=False, comment="文章内容")
+    create_tm   = Column(DateTime, default=datetime.now(), comment="创建时间")
+    uid         = Column(Integer, comment="创建者编号")
+
+    ep_id       = Column(Integer, ForeignKey("enterprise.id"), nullable=False, index=True, comment="文章归属的企业编号")
+    p_id        = Column(Integer, ForeignKey("em_product.id"), nullable=False, index=True, comment="文章归属的产品编号")
+
+    def __repr__(self):
+        return "<<em_product_article> title: {title}, create_tm: {ctm}>".format(title=self.title, ctm=self.create_tm)
+
+class ProductArticleTag(Base):
+    """
+    产品知识库摘要（标签）
+    """
+    __tablename__ = "em_product_article_tag"
+
+    id            = Column(Integer, primary_key=True, autoincrement=True)
+    tagname       = Column(VARCHAR(32), nullable=False, comment="摘要名称")
+    article_id    = Column(Integer, ForeignKey("em_product_article.id"), nullable=False, index=True, comment="标签归属的文章编号")
+    create_tm     = Column(DateTime, default=datetime.now(), comment="标签创建时间")
+    uid           = Column(Integer, comment="创建者编号")
+
+    article       = relationship("ProductArticle", uselist=False, back_populates="tags")
+
+    def __repr__(self):
+        return "<<em_product_article_tag> name: {name}, create_tm: {ctm}>".format(name=self.tagname, ctm=self.create_tm)

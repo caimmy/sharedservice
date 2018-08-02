@@ -5,3 +5,4 @@ logs
 __pycache__
 models/__pycache__
 models/mysql/__pycache__
+venv

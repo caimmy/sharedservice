@@ -72,6 +72,17 @@ class Enterprise(Base):
             _expire_tm=self.expire_tm
         )
 
+class EnterpriseAuthentication(Base):
+    """
+    企业认证信息
+    """
+    __tablename__   = "enterprise_auth"
+    id              = Column(Integer, primary_key=True, autoincrement=True)
+    catalog         = Column(Integer, nullable=False, comment="主体类型")
+    name            = Column(VARCHAR(128), nullable=False, comment="企业主体名称")
+    authid          = Column(VARCHAR(256), nullable=False, comment="证照号")
+
+
 class Customer(Base):
     '''
     客服账号表
