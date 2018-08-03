@@ -23,9 +23,6 @@ from models.mysql.tables import *
 from models.mysql.enterprise_tbls import *
 
 if "__main__" == __name__:
-    """
-    
     res = Base.metadata.create_all(engine)
     print(res)
     print("completed")
-    """
