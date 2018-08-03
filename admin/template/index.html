@@ -1,8 +1,16 @@
-{% extends "layout/base.html" %}
+{% extends "layout/admin2base.html" %}
 {% block title %}客服综合业务系统{% end %}
 {% block content %}
-<h2>hello templates</h2>
-{% for i in range(100) %}
-{{ i }} line </br>
-{% end %}
+{% module Breadcrumb(breadcrumb) %}
+<section class="content">
+    <div class="main-content-inner">
+        <!-- /section:basics/content.breadcrumbs -->
+        <div class="page-content">
+            <h2>hello templates</h2>
+            {% for i in range(100) %}
+            {{ i }} line </br>
+            {% end %}
+        </div>
+    </div>
+</section>
 {% end %}

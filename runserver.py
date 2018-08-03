@@ -28,7 +28,7 @@ from admin.uimodules import admin_ui
 from config import DEBUG_MODE
 
 APP_SETTINGS = {
-    "debug": True,
+    "debug": DEBUG_MODE,
     "cookie_secret": 'caimmy_9527',
     "xsrf_cookies": True,
     "static_path": os.path.join(os.path.dirname(__file__), "static"),

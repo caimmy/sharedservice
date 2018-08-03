@@ -22,3 +22,8 @@ class SideMenu(tornado.web.UIModule):
 class MainHeaderBar(tornado.web.UIModule):
     def render(self, *args, **kwargs):
         return self.render_string("uimodules/mainheaderbar.html")
+
+
+class Breadcrumb(tornado.web.UIModule):
+    def render(self, *args, **kwargs):
+        return self.render_string("uimodules/breadcrumb.html", info=args)

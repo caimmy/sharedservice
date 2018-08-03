@@ -17,7 +17,7 @@ from utils.wraps import web_authenticate, jsonp
 from models.mysql.tables import PlatUser
 from admin import AdminWebRequestHandler
 
-class LoginRequestHandler(SSWebDataRequestHandler):
+class LoginRequestHandler(AdminWebRequestHandler):
     @jsonp
     def get(self):
         phone   = self.get_argument('phone', '')
@@ -66,4 +66,8 @@ class RegisterRequestHandler(SSWebDataRequestHandler):
 class IndexRequestHandler(AdminWebRequestHandler):
     @web_authenticate
     def get(self):
-        self.render('index.html')
+        breadcrumb = [
+            {"name": "首页", "url": "/", "class": "ace-icon fa fa-home home-icon"},
+            {"name": "控制面板"}
+        ]
+        self.render('index.html', breadcrumb=breadcrumb)
