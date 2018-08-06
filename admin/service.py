@@ -17,7 +17,7 @@ import tornado
 import bp
 
 from admin.authentication import LoginRequestHandler, RegisterRequestHandler, IndexRequestHandler, AdminloginRequestHandler, \
-    AdminlogoutRequestHandler
+    AdminlogoutRequestHandler, ResetPasswordRequestHandler
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -34,5 +34,6 @@ def CreateBlueprint():
         (r'/login/?', LoginRequestHandler),
         url(r'/adminlogin/?', AdminloginRequestHandler, name="login"),
         url(r'/logout', AdminlogoutRequestHandler, name="logout"),
+        url(r'/profilesetting', ResetPasswordRequestHandler, name="profilesetting"),
         url(r'.*', BaseHandler)
     ])

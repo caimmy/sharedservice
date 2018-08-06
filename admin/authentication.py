@@ -12,6 +12,7 @@
 """
 __author__ = 'caimmy'
 
+import tornado.log
 from lib import SSWebDataRequestHandler
 from utils.wraps import web_authenticate, jsonp
 from models.mysql.tables import PlatUser
@@ -49,7 +50,8 @@ class AdminloginRequestHandler(AdminWebRequestHandler):
 
 class AdminlogoutRequestHandler(AdminWebRequestHandler):
     def get(self):
-        self.Loginout()
+        if self.current_user:
+            self.Loginout()
         return self.redirect(self.reverse_url("login"))
 
 class RegisterRequestHandler(SSWebDataRequestHandler):
@@ -62,6 +64,25 @@ class RegisterRequestHandler(SSWebDataRequestHandler):
         self.db.add(user)
         self.db.commit()
         self.write("success")
+
+class ResetPasswordRequestHandler(AdminWebRequestHandler):
+    def get(self):
+        return self.render('profile/personsetting.html')
+
+    def post(self):
+        cur_pass, set_pass = self.getArgument_list("cur_password", "set_password")
+        me = self.get_current_user()
+        self_obj = self.db.query(PlatUser).filter(PlatUser.id==me.get('id')).one()
+        if self_obj and self_obj.checkPassword(cur_pass):
+            try:
+                salt, new_pass = self_obj.genPassword(set_pass)
+                self_obj.salt = salt
+                self_obj.passwd = new_pass
+                self.db.commit()
+                return self.redirect(self.reverse_url("adminindex"))
+            except Exception as e:
+                tornado.log.gen_log.error(e)
+
 
 class IndexRequestHandler(AdminWebRequestHandler):
     @web_authenticate

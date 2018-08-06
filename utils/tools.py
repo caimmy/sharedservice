@@ -14,10 +14,16 @@ __author__ = 'caimmy'
 
 import codecs
 import yaml
+import random
 try:
     from yaml import CLoader as Loader
 except:
     from yaml import Loader
+
+SALT_SEED = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+             'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+             'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '@', '#', '$',
+             '%', '&', '*']
 
 def LoadYAML(yamlfile):
     with codecs.open(yamlfile, 'r', 'utf-8') as yf:
@@ -57,3 +63,26 @@ def existsNone(*args):
             break
 
     return ret_chk
+
+def genSalt(length=6):
+    """
+    生成密码盐
+    @return string
+    """
+    _s = []
+    salt_size = len(SALT_SEED) - 1
+    for i in range(length):
+        _s.append(random.randint(0, salt_size))
+
+    return "".join(_s)
+
+def ensureBytes(s):
+    """
+    @return bytes
+    """
+    return s.encode("utf-8") if not isinstance(s, bytes) else s
+
+def ensureString(b):
+    """
+    """
+    return b.decode("utf-8") if not isinstance(b, str) else b

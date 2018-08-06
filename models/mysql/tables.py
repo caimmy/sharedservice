@@ -12,11 +12,14 @@
 """
 __author__ = 'caimmy'
 
+import hashlib
+
 from datetime import datetime
 from sqlalchemy import Column, Integer, VARCHAR, DateTime, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 from models.mysql.db import engine, Base
 from models import ENUM_VALID, ENUM_INVALID, ENUM_DELETE
+from utils.tools import genSalt, ensureBytes
 
 class PlatUser(Base):
     __tablename__   = 'plat_user'
@@ -34,6 +37,27 @@ class PlatUser(Base):
 
     enterprise      = relationship("Enterprise", backref="users")
 
+    @staticmethod
+    def sigPassword(salt, pwd):
+        """
+        用salt和pwd生成最终存表密码
+        @return string
+        """
+        return hashlib.sha1(ensureBytes(salt+pwd)).hexdigest()
+
+    def genPassword(self, password, salt=""):
+        """
+        对原始密码进行加盐计算，并生成sha1摘要作为存放的最终密码
+        """
+        salt = genSalt(6) if "" == salt else salt
+        sig_pass = PlatUser.sigPassword(salt, password)
+        return salt, sig_pass
+
+    def checkPassword(self, password):
+        """
+        校验密码是否正确
+        """
+        return PlatUser.sigPassword(self.salt, password) == self.passwd
 
     def getAttributes(self):
         '''
