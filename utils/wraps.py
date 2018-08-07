@@ -15,7 +15,6 @@ import json
 import functools
 from lib import makeResponse
 from utils import ensureBytes, ensureString
-import tornado.routing
 
 def request_authenticate(method):
     '''

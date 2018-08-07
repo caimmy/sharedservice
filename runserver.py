@@ -24,6 +24,7 @@ import exam.service
 import admin.service
 
 from admin.uimodules import admin_ui
+from tornado_ui import ui_methods
 
 from config import DEBUG_MODE
 
@@ -32,7 +33,8 @@ APP_SETTINGS = {
     "cookie_secret": 'caimmy_9527',
     "xsrf_cookies": True,
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
-    "ui_modules": admin_ui
+    "ui_modules": admin_ui,
+    "ui_methods": ui_methods
 }
 
 class DemoHandler(tornado.web.RequestHandler):

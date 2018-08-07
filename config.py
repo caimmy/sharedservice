@@ -20,3 +20,7 @@ MYSQL_USER      = 'ss'
 MYSQL_PAWD      = 'Abcd$1234'
 MYSQL_DBNAME    = 'ss'
 
+
+REDIS_HOST      = "localhost"
+REDIS_PORT      = 6379
+REDIS_DB        = 0

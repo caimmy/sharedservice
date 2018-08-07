@@ -17,6 +17,7 @@ from lib import SSWebDataRequestHandler
 from utils.wraps import web_authenticate, jsonp
 from models.mysql.tables import PlatUser
 from admin import AdminWebRequestHandler
+from tornado_ui.ui_methods import flash
 
 class LoginRequestHandler(AdminWebRequestHandler):
     @jsonp
@@ -79,10 +80,14 @@ class ResetPasswordRequestHandler(AdminWebRequestHandler):
                 self_obj.salt = salt
                 self_obj.passwd = new_pass
                 self.db.commit()
+                flash(self, "modify password success", "info")
                 return self.redirect(self.reverse_url("adminindex"))
             except Exception as e:
                 tornado.log.gen_log.error(e)
-
+                flash(self, "modify failure " + str(e))
+        else:
+            flash(self, "modify password failure")
+            self.write("asdfsafasdf")
 
 class IndexRequestHandler(AdminWebRequestHandler):
     @web_authenticate
