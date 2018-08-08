@@ -14,20 +14,45 @@ __author__ = 'caimmy'
 
 import os, time
 import functools
+import pickle
 from hashlib import sha1
 from utils.caches import RedisSession
 
 create_sess_id = lambda: sha1(bytes("%s%s" % (os.urandom(16), time.time()), encoding="utf-8")).hexdigest()
 
-class SessionData(dict):
-    def __init__(self, sessid):
+class SessionData:
+    def __init__(self, request_handler):
+        sessid = request_handler.get_secure_cookie("sess_id", None)
+        if not sessid:
+            sessid = create_sess_id()
         self.sessid = sessid
+        self.cache = RedisSession(self.sessid)
+        self.info = {}
+
+    def get(self, item, defaults=None):
+        if item in self.info:
+            value = self.info[item]
+        else:
+            value = self.cache.getItem(item)
+            if value:
+                self.info[item] = value
+        return defaults if not value else pickle.loads(value)
 
     def __getitem__(self, item):
-        return self.get(item) if item in self else None
+        return self.get(item)
 
     def __setitem__(self, key, value):
-        self[key] = value
+        self.set(key, value)
+
+    def set(self, key, value):
+        self.cache.setItem(key, pickle.dumps(value))
+        self.info[key] = value
+
+    def delete(self, key):
+        self.cache.delItem(key)
+
+    def clear(self):
+        self.cache.clear()
 
 
 def sessoin(method):
@@ -45,7 +70,7 @@ def sessoin(method):
             self.set_secure_cookie("sess_id", sess_id, 1)
         session_data = cache.getItem(sess_id)
         if not session_data:
-            session_data = SessionData(sess_id)
+            session_data = SessionData(self)
         setattr(self, "session", session_data)
         data = method(self, *args, **kwargs)
         self.write(data)

@@ -72,7 +72,7 @@ def genSalt(length=6):
     _s = []
     salt_size = len(SALT_SEED) - 1
     for i in range(length):
-        _s.append(random.randint(0, salt_size))
+        _s.append(SALT_SEED[random.randint(0, salt_size)])
 
     return "".join(_s)
 

@@ -21,9 +21,7 @@ def flash(self, message, category="error"):
     :param category:
     :return:
     """
-    flashes = self.session.get("_flashes", [])
-    flashes.append((category, message))
-    self.session.set("_flashes", flashes)
+    self.session.set("_flashes", {'category': category, "message": message})
 
 def get_flashed_messages(self):
     """
@@ -31,6 +29,18 @@ def get_flashed_messages(self):
     :param self:
     :return:
     """
-    flashes = self.session.get("_flashes", [])
-    self.clear_cookie("_flashes")
-    return flashes
+    flashes = self.session.get("_flashes", None)
+    if flashes:
+        self.session.delete("_flashes")
+        return [flashes]
+    else:
+        return []
+
+def get_login_identify(self, prop):
+    """
+    获取当前登录用户的信息
+    :param prop:
+    :return:
+    """
+    cur_user = self.session.get("user")
+    return cur_user[prop] if cur_user and prop in cur_user else ''

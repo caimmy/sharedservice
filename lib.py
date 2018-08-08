@@ -17,6 +17,7 @@ import tornado.web
 from sqlalchemy.orm import sessionmaker, scoped_session
 from utils.tools import LoadYAML2Object
 from models.yaml import MimcConfig
+from utils.tor_session import SessionData
 
 from models.mysql.db import engine
 
@@ -42,6 +43,7 @@ class SSWebRequestHandler(tornado.web.RequestHandler):
 
     def prepare(self):
         self.response = makeResponse()
+        self.session = SessionData(self)
 
     def get_current_user(self):
         loginned_user = self.get_secure_cookie("user")
@@ -57,6 +59,7 @@ class SSWebRequestHandler(tornado.web.RequestHandler):
         :return:
         '''
         self.set_secure_cookie("user", json.dumps(user))
+        self.session.set("user", user)
 
     def Loginout(self):
         '''
@@ -64,6 +67,7 @@ class SSWebRequestHandler(tornado.web.RequestHandler):
         :return:
         '''
         self.clear_cookie("user")
+        self.session.clear()
 
     @property
     def db(self):

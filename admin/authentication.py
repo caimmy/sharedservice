@@ -18,6 +18,7 @@ from utils.wraps import web_authenticate, jsonp
 from models.mysql.tables import PlatUser
 from admin import AdminWebRequestHandler
 from tornado_ui.ui_methods import flash
+from utils.tor_session import sessoin
 
 class LoginRequestHandler(AdminWebRequestHandler):
     @jsonp
@@ -46,7 +47,10 @@ class AdminloginRequestHandler(AdminWebRequestHandler):
         if user is None:
             return self.redirect(self.reverse_url("login"))
         else:
-            self.Login(user.getAttributes())
+            if user.checkPassword(password):
+                self.Login(user.getAttributes())
+            else:
+                flash(self, "密码错误")
             return self.redirect(self.reverse_url("admin_index"))
 
 class AdminlogoutRequestHandler(AdminWebRequestHandler):
@@ -80,14 +84,14 @@ class ResetPasswordRequestHandler(AdminWebRequestHandler):
                 self_obj.salt = salt
                 self_obj.passwd = new_pass
                 self.db.commit()
-                flash(self, "modify password success", "info")
-                return self.redirect(self.reverse_url("adminindex"))
+                flash(self, "修改密码成功", "info")
+                return self.redirect(self.reverse_url("admin_index"))
             except Exception as e:
                 tornado.log.gen_log.error(e)
-                flash(self, "modify failure " + str(e))
+                flash(self, "出现异常 " + str(e))
         else:
-            flash(self, "modify password failure")
-            self.write("asdfsafasdf")
+            flash(self, "原密码错误")
+        return self.render("profile/personsetting.html")
 
 class IndexRequestHandler(AdminWebRequestHandler):
     @web_authenticate

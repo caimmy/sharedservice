@@ -16,15 +16,19 @@ import redis
 from config import REDIS_HOST, REDIS_PORT, REDIS_DB
 
 class RedisSession:
-    def __init__(self):
+    def __init__(self, sessid):
         self.conn = redis.StrictRedis(REDIS_HOST, REDIS_PORT, REDIS_DB)
+        self.sessid = sessid
 
     def getItem(self, key):
-        return self.conn.get(key)
+        return self.conn.hget(self.sessid, key)
 
-    def setItem(self, key, data, duration):
-        self.conn.set(key, data)
-        self.conn.expire(key, duration)
+    def setItem(self, key, data, duration=3600):
+        self.conn.hset(self.sessid, key, data)
+        self.conn.expire(self.sessid, duration)
 
-    def delItem(self, key):
-        self.conn.delete(key)
+    def delItem(self, item):
+        self.conn.hdel(self.sessid, item)
+
+    def clear(self):
+        self.conn.delete(self.sessid)
