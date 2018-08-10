@@ -18,7 +18,6 @@ from utils.wraps import web_authenticate, jsonp
 from models.mysql.tables import PlatUser
 from admin import AdminWebRequestHandler
 from tornado_ui.ui_methods import flash
-from utils.tor_session import sessoin
 
 class LoginRequestHandler(AdminWebRequestHandler):
     @jsonp
@@ -51,7 +50,7 @@ class AdminloginRequestHandler(AdminWebRequestHandler):
                 self.Login(user.getAttributes())
             else:
                 flash(self, "密码错误")
-            return self.redirect(self.reverse_url("admin_index"))
+            return self.redirect(self.reverse_url("login"))
 
 class AdminlogoutRequestHandler(AdminWebRequestHandler):
     def get(self):

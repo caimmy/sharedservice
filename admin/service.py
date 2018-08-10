@@ -13,19 +13,19 @@
 __author__ = 'caimmy'
 
 from tornado.web import url
-import tornado
 import bp
+import tornado
+import traceback
 
 from admin.authentication import LoginRequestHandler, RegisterRequestHandler, IndexRequestHandler, AdminloginRequestHandler, \
     AdminlogoutRequestHandler, ResetPasswordRequestHandler
+from admin import AdminWebRequestHandler
 
 
-class BaseHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.write_error(404)
+class BaseHandler(AdminWebRequestHandler):
+    def get(self, *args, **kwargs):
+        raise tornado.web.HTTPError(404)
 
-    def write_error(self, status_code, **kwargs):
-        self.write("error: " + str(status_code))
 
 def CreateBlueprint():
     return bp.Blueprint(r'admin', [

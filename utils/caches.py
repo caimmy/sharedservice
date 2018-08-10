@@ -25,7 +25,7 @@ class RedisSession:
 
     def setItem(self, key, data, duration=3600):
         self.conn.hset(self.sessid, key, data)
-        self.conn.expire(self.sessid, duration)
+        #elf.conn.expire(self.sessid, duration)
 
     def delItem(self, item):
         self.conn.hdel(self.sessid, item)

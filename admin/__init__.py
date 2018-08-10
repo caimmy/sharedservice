@@ -30,4 +30,11 @@ class AdminWebRequestHandler(SSWebRequestHandler):
                 self.write(line)
             self.finish()
         else:
-            self.write("error : " + str(status_code))
+            if 404 == status_code:
+                return self.render("404.html")
+            else:
+                err_details = kwargs.get("exc_info")
+                err_info = ""
+                if (1 < len(err_details)):
+                    err_info = str(err_details[1])
+                return self.render("500.html", err=err_info)

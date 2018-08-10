@@ -28,6 +28,7 @@ class SessionData:
         self.sessid = sessid
         self.cache = RedisSession(self.sessid)
         self.info = {}
+        request_handler.set_secure_cookie("sess_id", sessid, 1, 1)
 
     def get(self, item, defaults=None):
         if item in self.info:
@@ -45,14 +46,18 @@ class SessionData:
         self.set(key, value)
 
     def set(self, key, value):
-        self.cache.setItem(key, pickle.dumps(value))
-        self.info[key] = value
+        cache_value = pickle.dumps(value)
+        self.cache.setItem(key, cache_value)
+        self.info[key] = cache_value
 
     def delete(self, key):
+        if key in self.info:
+            del(self.info[key])
         self.cache.delItem(key)
 
     def clear(self):
         self.cache.clear()
+        self.info.clear()
 
 
 def sessoin(method):
