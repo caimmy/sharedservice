@@ -17,7 +17,7 @@ import hashlib
 from datetime import datetime
 from sqlalchemy import Column, Integer, VARCHAR, DateTime, Enum, ForeignKey
 from sqlalchemy.orm import relationship
-from models.mysql.db import engine, Base
+from models.mysql.db import Base
 from models import ENUM_VALID, ENUM_INVALID, ENUM_DELETE
 from utils.tools import genSalt, ensureBytes
 
@@ -64,12 +64,12 @@ class PlatUser(Base):
         获取用户模型的属性
         :return: dict
         '''
-        return {"id": self.id, "name": self.name, "email": self.email, "phone": self.phone}
+        return {"id": self.id, "name": self.name, "email": self.email, "phone": self.phone, "ep": self.ep}
 
     def __repr__(self):
-        return "<<Table> Plat_user> : id {_id}, phone: {_p}, name: {_name}".format(_id=self.id,
+        return "<<Table> Plat_user> : id {_id}, phone: {_p}, name: {_name}, ep: {_ep}".format(_id=self.id,
                                                                               _p=self.phone,
-                                                                              _name=self.name)
+                                                                              _name=self.name, _ep=self.ep)
 
 
 class Enterprise(Base):

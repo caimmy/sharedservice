@@ -15,10 +15,11 @@ __author__ = 'caimmy'
 from tornado.web import url
 import bp
 import tornado
-import traceback
 
 from admin.authentication import LoginRequestHandler, RegisterRequestHandler, IndexRequestHandler, AdminloginRequestHandler, \
     AdminlogoutRequestHandler, ResetPasswordRequestHandler
+from admin.productadmin import ProductIndex, ProductCreate, ProductConfig
+from admin.article_mgr import ArticleIndex, ArticleCreate
 from admin import AdminWebRequestHandler
 
 
@@ -35,5 +36,13 @@ def CreateBlueprint():
         url(r'/adminlogin/?', AdminloginRequestHandler, name="login"),
         url(r'/logout', AdminlogoutRequestHandler, name="logout"),
         url(r'/profilesetting', ResetPasswordRequestHandler, name="profilesetting"),
+
+        # 产品管理相关
+        url(r'/productindex', ProductIndex, name="product_index"),
+        url(r'/productcreate', ProductCreate, name="product_create"),
+        url(r'/productconfig', ProductConfig, name="product_config"),
+        ## 产品知识库相关
+        url(r'/product_article_index', ArticleIndex, name="product_article_index"),
+        url(r'/product.article_create', ArticleCreate, name="product_article_create"),
         url(r'.*', BaseHandler)
     ])

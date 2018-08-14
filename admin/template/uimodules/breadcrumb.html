@@ -1,11 +1,27 @@
 <section class="content-header">
-      <h1>
-        Buttons
-        <small>Control panel</small>
+    {% if "title" in info %}
+    <h1>
+        {{ info["title"][0] }}
+        <small>{{ info["title"][1] }}</small>
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">UI</a></li>
-        <li class="active">Buttons</li>
-      </ol>
+    {% end %}
+    {% if "nav" in info %}
+    <ol class="breadcrumb">
+        {% for item in info["nav"] %}
+        {% if "class" in item %}
+        {% if "url" in item %}
+        <li><a href="{{ item['url'] }}"><i class="{{ item['class'] }}"></i>{{ item["name"] }}</a></li>
+        {% else %}
+        <li class="active"><i class="{{ item['class'] }}"></i>{{ item["name"] }}</li>
+        {% end %}
+        {% else %}
+        {% if "url" in item %}
+        <li><a href="{{ item['url'] }}">{{ item["name"] }}</a></li>
+        {% else %}
+        <li class="active">{{item["name"]}}</li>
+        {% end %}
+        {% end %}
+        {% end %}
+    </ol>
+    {% end %}
     </section>

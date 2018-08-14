@@ -1,0 +1,50 @@
+{% extends "../layout/admin2base.html" %}
+{% block title %}产品管理{% end %}
+{% block content %}
+{% if breadcrumb %}
+{% module Breadcrumb(breadcrumb) %}
+{% end %}
+<section class="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">客服产品索引</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <a class="btn btn-primary" type="button" href="{{ reverse_url('product_create') }}"
+               style="margin-bottom: 5px;">创建客服产品</a>
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>产品名称</th>
+                    <th>产品标识</th>
+                    <th>产品描述</th>
+                    <th></th>
+                </tr>
+                {% for product in products %}
+                <tr>
+                    <td>{{product.name}}</td>
+                    <td>{{product.label}}</td>
+                    <td title="{{product.desc}}">{{product.desc[:30]}}</td>
+                    <td><a href="{{ full_url('product_config', {'pid': product.id}) }}">配置管理</a></td>
+                </tr>
+                {% end %}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer clearfix">
+            <ul class="pagination pagination-sm no-margin pull-right">
+                <li><a href="#">«</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">»</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+</script>
+{% end %}

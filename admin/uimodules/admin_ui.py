@@ -26,4 +26,5 @@ class MainHeaderBar(tornado.web.UIModule):
 
 class Breadcrumb(tornado.web.UIModule):
     def render(self, *args, **kwargs):
-        return self.render_string("uimodules/breadcrumb.html", info=args)
+        tornado.log.gen_log.info(args)
+        return self.render_string("uimodules/breadcrumb.html", info=args[0])

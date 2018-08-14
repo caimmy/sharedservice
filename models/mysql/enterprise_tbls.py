@@ -14,9 +14,8 @@ __author__ = 'caimmy'
 
 from models.mysql.db import Base
 from datetime import datetime
-from sqlalchemy import Column, Integer, VARCHAR, DateTime, Enum, TEXT, ForeignKey
+from sqlalchemy import Column, Integer, VARCHAR, DateTime, TEXT, ForeignKey
 from sqlalchemy.orm import relationship
-from models import ENUM_VALID, ENUM_INVALID, ENUM_DELETE
 from models.mysql.tables import Enterprise
 
 class MProduct(Base):
@@ -90,7 +89,7 @@ class ProductArticleTag(Base):
     create_tm     = Column(DateTime, default=datetime.now(), comment="标签创建时间")
     uid           = Column(Integer, comment="创建者编号")
 
-    article       = relationship("ProductArticle", uselist=False, back_populates="tags")
+    article       = relationship("ProductArticle", backref="tags")
 
     def __repr__(self):
         return "<<em_product_article_tag> name: {name}, create_tm: {ctm}>".format(name=self.tagname, ctm=self.create_tm)

@@ -14,6 +14,7 @@ __author__ = 'caimmy'
 
 import json
 import tornado.web
+import SSExceptions
 from sqlalchemy.orm import sessionmaker, scoped_session
 from utils.tools import LoadYAML2Object
 from models.yaml import MimcConfig
@@ -41,6 +42,22 @@ class SSApplication(tornado.web.Application):
 class SSWebRequestHandler(tornado.web.RequestHandler):
     version = 1.0
 
+    def __init__(self, application, request, **kwargs):
+        super(SSWebRequestHandler, self).__init__(application, request, **kwargs)
+        self.user_info = None
+
+    @property
+    def user(self):
+        if self.user_info:
+            return self.user_info
+        else:
+            ui = self.get_secure_cookie("user")
+            if ui:
+                self.user_info = json.loads(ui)
+                return self.user_info
+            else:
+                raise SSExceptions.NotLoginException()
+
     def prepare(self):
         self.response = makeResponse()
         self.session = SessionData(self)
@@ -67,6 +84,7 @@ class SSWebRequestHandler(tornado.web.RequestHandler):
         :return:
         '''
         self.clear_cookie("user")
+        self.clear_cookie("sess_id")
         self.session.clear()
 
     @property

@@ -1,0 +1,36 @@
+{% extends "../layout/admin2base.html" %}
+{% block title %}产品管理{% end %}
+{% block content %}
+{% if breadcrumb %}
+{% module Breadcrumb(breadcrumb) %}
+{% end %}
+<section class="content">
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">客服产品 - 配置管理 - {{ product.name }}</h3>
+        </div>
+        <div class="box-body">
+            <div class="col-md-12">
+                <div class="col-md-3">
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
+                            <i class="fa fa-map-marker"></i>
+
+                            <h3 class="box-title">产品知识库</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body clearfix">
+                            <blockquote class="">
+                                <p>产品知识库供客服业务人员查阅资料使用！.</p>
+                                <small>知识库 <cite title="Source Title"><a href="{{ full_url('product_article_index', {'pid': product.id}) }}">管理</a></cite></small>
+                            </blockquote>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% end %}

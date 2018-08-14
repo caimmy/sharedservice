@@ -95,8 +95,13 @@ class ResetPasswordRequestHandler(AdminWebRequestHandler):
 class IndexRequestHandler(AdminWebRequestHandler):
     @web_authenticate
     def get(self):
-        breadcrumb = [
-            {"name": "首页", "url": "/", "class": "ace-icon fa fa-home home-icon"},
-            {"name": "控制面板"}
-        ]
+        breadcrumb = {
+            "title": [
+                '系统', '导航面板'
+            ],
+            "nav": [
+                {"name": "首页", "url": "/", "class": "ace-icon fa fa-home home-icon"},
+                {"name": "控制面板"}
+            ]
+        }
         self.render('index.html', breadcrumb=breadcrumb)
