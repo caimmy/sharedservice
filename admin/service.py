@@ -43,6 +43,6 @@ def CreateBlueprint():
         url(r'/productconfig', ProductConfig, name="product_config"),
         ## 产品知识库相关
         url(r'/product_article_index', ArticleIndex, name="product_article_index"),
-        url(r'/product.article_create', ArticleCreate, name="product_article_create"),
+        url(r'/product_article_create', ArticleCreate, name="product_article_create"),
         url(r'.*', BaseHandler)
     ])

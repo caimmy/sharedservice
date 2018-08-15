@@ -69,10 +69,12 @@ class ProductArticle(Base):
     title       = Column(VARCHAR(128), nullable=False, comment="文章标题")
     content     = Column(TEXT, nullable=False, comment="文章内容")
     create_tm   = Column(DateTime, default=datetime.now(), comment="创建时间")
-    uid         = Column(Integer, comment="创建者编号")
+    uid         = Column(Integer, ForeignKey("plat_user.id"), comment="创建者编号")
 
     ep_id       = Column(Integer, ForeignKey("enterprise.id"), nullable=False, index=True, comment="文章归属的企业编号")
     p_id        = Column(Integer, ForeignKey("em_product.id"), nullable=False, index=True, comment="文章归属的产品编号")
+
+    creator     = relationship("PlatUser", backref="articles")
 
     def __repr__(self):
         return "<<em_product_article> title: {title}, create_tm: {ctm}>".format(title=self.title, ctm=self.create_tm)
