@@ -18,10 +18,10 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, VARCHAR, DateTime, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 from models.mysql.db import Base
-from models import ENUM_VALID, ENUM_INVALID, ENUM_DELETE
+from models import PasswordBase
 from utils.tools import genSalt, ensureBytes
 
-class PlatUser(Base):
+class PlatUser(Base, PasswordBase):
     __tablename__   = 'plat_user'
     '''
     后台用户信息表
@@ -36,28 +36,6 @@ class PlatUser(Base):
     ep              = Column(Integer, ForeignKey("enterprise.id"), nullable=False, index=True, comment="成员所属的企业编号")
 
     enterprise      = relationship("Enterprise", backref="users")
-
-    @staticmethod
-    def sigPassword(salt, pwd):
-        """
-        用salt和pwd生成最终存表密码
-        @return string
-        """
-        return hashlib.sha1(ensureBytes(salt+pwd)).hexdigest()
-
-    def genPassword(self, password, salt=""):
-        """
-        对原始密码进行加盐计算，并生成sha1摘要作为存放的最终密码
-        """
-        salt = genSalt(6) if "" == salt else salt
-        sig_pass = PlatUser.sigPassword(salt, password)
-        return salt, sig_pass
-
-    def checkPassword(self, password):
-        """
-        校验密码是否正确
-        """
-        return PlatUser.sigPassword(self.salt, password) == self.passwd
 
     def getAttributes(self):
         '''
@@ -105,26 +83,3 @@ class EnterpriseAuthentication(Base):
     catalog         = Column(Integer, nullable=False, comment="主体类型")
     name            = Column(VARCHAR(128), nullable=False, comment="企业主体名称")
     authid          = Column(VARCHAR(256), nullable=False, comment="证照号")
-
-
-class Customer(Base):
-    '''
-    客服账号表
-    '''
-    __tablename__   = 'custom_user'
-
-    id              = Column(Integer, primary_key=True, autoincrement=True)
-    name            = Column(VARCHAR(128), nullable=False, comment='客服名称')
-    phone           = Column(VARCHAR(20), nullable=False, unique=True, index=True, comment='客服联系电话')
-    salt            = Column(VARCHAR(6), nullable=False, comment='密码salt')
-    passwd          = Column(VARCHAR(128), nullable=False, comment='客服账号密码')
-    status          = Column(Enum(ENUM_VALID, ENUM_INVALID, ENUM_DELETE), default=ENUM_INVALID, comment='客服账号状态')
-    create_tm       = Column(DateTime, default=datetime.now(), comment='客服账号的创建时间')
-
-    def __repr__(self):
-        return '<<Table> Custom_user> : id: {id}, name: {name}, phone: {phone}, create_tm: {create_tm}'.format(
-            id=self.id,
-            name=self.name,
-            phone=self.phone,
-            create_tm=self.create_tm
-        )

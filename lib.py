@@ -101,7 +101,7 @@ class SSWebRequestHandler(tornado.web.RequestHandler):
     def getArgument_list(self, *args):
         ret_arguments = []
         for a in args:
-            ret_arguments.append(self.get_argument(a, None))
+            ret_arguments.append(self.get_arguments(a) if a.endswith("[]") else self.get_argument(a, None))
         return ret_arguments
 
 
