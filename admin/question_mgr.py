@@ -17,6 +17,7 @@ from tornado.log import gen_log
 from admin import AdminWebRequestHandler
 from models.mysql.enterprise_tbls import Enterprise, MProduct, ProductQuestion, ProductQuestionRel
 from tornado_ui.ui_methods import flash
+from sqlalchemy import and_
 
 class QuestionIndex(AdminWebRequestHandler):
     """
@@ -24,8 +25,8 @@ class QuestionIndex(AdminWebRequestHandler):
     """
     def get(self, *args, **kwargs):
         ep_id = self.user.get("ep")
-        questions = self.db.query(ProductQuestion).filter(ProductQuestion.id == ProductQuestionRel.product_id).filter(
-            ProductQuestionRel.ep_id == ep_id).all()
+        questions = self.db.query(ProductQuestion).filter(ProductQuestion.id==ProductQuestionRel.question_id).\
+            filter(ProductQuestionRel.ep_id==ep_id).all()
         return self.render("question_mgr/question_index.html", breadcrumb=[], questions=questions)
 
 class QuestionCreate(AdminWebRequestHandler):
