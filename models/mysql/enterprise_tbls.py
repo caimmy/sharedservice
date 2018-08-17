@@ -37,6 +37,10 @@ class MProduct(Base):
 
     enterprise = relationship("Enterprise", backref="products")
 
+    @staticmethod
+    def allEnabledProducts(db, ep_id):
+        return db.query(MProduct).filter(MProduct.ep_id==ep_id).all()
+
     def __repr__(self):
         return "<<m_product> id: {id}, name: {name}, label: {label} >".format(id=self.id, name=self.name, label=self.label)
 
@@ -150,7 +154,7 @@ class ProductQuestion(Base):
     uid             = Column(Integer, comment="创建者编号")
 
     def __repr__(self):
-        return "<<ProductQuestion> question: {_q}".format(__q=self.question)
+        return "<<ProductQuestion> question: {ques}>".format(ques=self.question)
 
 class ProductQuestionSamerel(Base):
     """
@@ -168,3 +172,21 @@ class ProductQuestionSamerel(Base):
 
     def __repr__(self):
         return "<<ProductQuestionSamerel>: {_q}".format(_q=self.question)
+
+class ProductQuestionRel(Base):
+    """
+    问题和产品的关联关系
+    """
+    __tablename__   = "em_product_question_rel"
+
+    id              = Column(Integer, primary_key=True, autoincrement=True)
+    product_id      = Column(Integer, ForeignKey("em_product.id"), nullable=False, comment="产品编号")
+    question_id     = Column(Integer, ForeignKey("em_product_question.id"), nullable=False, comment="问题编号")
+    ep_id           = Column(Integer, ForeignKey("enterprise.id"), nullable=False, comment="关联企业的编号")
+    create_tm       = Column(DateTime, default=datetime.now(), comment="创建关联关系的时间")
+    uid             = Column(Integer, comment="创建者编号")
+
+    product         = relationship("MProduct", backref="questions")
+
+    def __repr__(self):
+        return "<<ProductQuestionRel>: product_id_{_p} - question_id_{_q}".format(_p=self.product_id, _q=self.question_id)

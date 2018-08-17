@@ -26,7 +26,7 @@
                 {% for art in articles %}
                 <tr>
                     <td>{{ art.id }}</td>
-                    <td>{{ art.title }}</td>
+                    <td title="{{ art.content }}">{{ art.title }}</td>
                     <td>{{ art.creator.name }}</td>
                     <td>{{ art.create_tm }}</td>
                     <td><a>编辑</a></td>

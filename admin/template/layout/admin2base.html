@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>客服综合业务系统 - {% block title %}{% end %}</title>
-    <link rel="shortcut icon" href="{{static_url('favicon.ico')}}" />
+    <link rel="shortcut icon" href="{{static_url('favicon.ico')}}"/>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -21,7 +21,8 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{static_url('admin2/dist/css/skins/_all-skins.min.css')}}">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{static_url('admin2/plugins/iCheck/all.css')}}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -261,7 +262,17 @@
 
 </div>
 <!-- ./wrapper -->
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).ready(function () {
+            $(".js-basic-multiple").select2();
+        });
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue'
+        });
+    })
+</script>
 <!-- Bootstrap 3.3.6 -->
 <script src="{{static_url('admin2/bootstrap/js/bootstrap.min.js')}}"></script>
 <!-- FastClick -->
@@ -275,6 +286,7 @@
 <script src="{{static_url('admin2/plugins/jvectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
 <!-- SlimScroll 1.3.0 -->
 <script src="{{static_url('admin2/plugins/slimScroll/jquery.slimscroll.min.js')}}"></script>
+<script type="text/javascript" src="{{static_url('admin2/plugins/iCheck/icheck.min.js')}}"></script>
 <!-- ChartJS 1.0.1 -->
 <script src="{{static_url('admin2/plugins/chartjs/Chart.min.js')}}"></script>
 <script type="text/javascript" src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>

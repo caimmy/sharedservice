@@ -30,7 +30,7 @@ class CustomerIndex(AdminWebRequestHandler):
 class CustomerCreate(AdminWebRequestHandler):
     def get(self, *args, **kwargs):
         enterprise = self.db.query(Enterprise).filter(Enterprise.id==self.user.get("ep")).one()
-        products_list = self.db.query(MProduct).filter(MProduct.ep_id==self.user.get("ep")).all()
+        products_list = MProduct.allEnabledProducts(self.db, self.user.get("ep"))
         return self.render("customer_mgr/customer_create.html", breadcrumb=[],
                            enterprise=enterprise, products=products_list)
 
