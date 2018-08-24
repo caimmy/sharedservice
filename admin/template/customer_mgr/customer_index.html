@@ -29,7 +29,7 @@
                     <td>{{ c.phone }}</td>
                     <td>{{ c.create_tm }}</td>
                     <td></td>
-                    <td><a>详情</a></td>
+                    <td><a href="{{ full_url('customer_detail', {'cid': c.id}) }}">详情</a></td>
                 </tr>
                 {% end %}
                 </tbody>

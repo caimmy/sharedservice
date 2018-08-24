@@ -82,6 +82,8 @@ class CustomerEnterpriseRel(Base):
                                  default="auto", comment="创建本条关系的方式， auto客服自动申请创建， enterprise企业创建， system平台设置")
     uid                 = Column(Integer, comment="创建者")
 
+    customer            = relationship("Customer", foreign_keys=[cm_id], backref="ep_rel")
+
 class ServiceRequirements(Base):
     """
     企业服务需求

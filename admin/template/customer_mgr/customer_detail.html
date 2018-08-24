@@ -1,0 +1,80 @@
+{% extends "../layout/admin2base.html" %}
+{% block title %}客服管理{% end %}
+{% block content %}
+{% if breadcrumb %}
+{% module Breadcrumb(breadcrumb) %}
+{% end %}
+<section class="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">客服人员信息 - {{ customer.name }}</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <form class="form-horizontal" method="POST" action="{{full_url('customer_detail', {'cid': customer.id})}}">
+                        {% raw xsrf_form_html() %}
+                        <input type="hidden" name="uid" value="{{ customer.id }}">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">客服姓名</label>
+
+                                <div class="col-sm-10">
+                                    <input name="name" type="text" class="form-control" value="{{ customer.name }}" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">手机号</label>
+
+                                <div class="col-sm-10">
+                                    <input name="phone" type="text" class="form-control" value="{{customer.phone}}" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">初始密码</label>
+
+                                <div class="col-sm-10">
+                                    <input name="pwd" type="text" class="form-control" placeholder="置空不修改密码">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">账号状态</label>
+
+                                <div class="col-sm-10">
+                                    <select name="status" class="form-control">
+                                        <option value="1">正常状态</option>
+                                        <option value="0">禁用状态</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">绑定产品</label>
+
+                                <div class="col-sm-10">
+                                    <select name="bind_products[]" multiple="multiple" id="bind_p_select2"
+                                            class="form-control js-basic-multiple">
+                                        {% for p in products %}
+                                        <option value="{{ p.id }}">{{ p.name }}</option>
+                                        {% end %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-info pull-right">提交</button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#bind_p_select2").val({% raw ep_rels %});
+    })
+</script>
+{% end %}

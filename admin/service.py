@@ -20,7 +20,7 @@ from admin.authentication import LoginRequestHandler, RegisterRequestHandler, In
     AdminlogoutRequestHandler, ResetPasswordRequestHandler
 from admin.productadmin import ProductIndex, ProductCreate, ProductConfig
 from admin.article_mgr import ArticleIndex, ArticleCreate
-from admin.customer_mgr import CustomerIndex, CustomerCreate
+from admin.customer_mgr import CustomerIndex, CustomerCreate, CustomerDetail
 from admin.question_mgr import QuestionIndex, QuestionCreate
 from admin import AdminWebRequestHandler
 
@@ -49,6 +49,7 @@ def CreateBlueprint():
         # 客服人员管理相关
         url(r'/customer_index', CustomerIndex, name="customer_index"),
         url(r'/customer_create', CustomerCreate, name="customer_create"),
+        url(r"/customer_detail", CustomerDetail, name="customer_detail"),
         # 问答管理
         url(r'/question_index', QuestionIndex, name="question_index"),
         url(r'/question_create', QuestionCreate, name="question_create"),

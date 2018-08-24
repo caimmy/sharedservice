@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>共享客服工作平台</title>
+  <meta name="keywords" content="layui,ui,ui框架,前端框架,JS组件">
+  <meta name="description" content="Layui 是一款采用自身模块规范编写的情怀型前端UI框架，遵循原生HTML/CSS/JS的书写与组织形式，门槛极低，拿来即用。其外在极简，却又不失饱满的内在，体积轻盈，组件丰盈，从核心代码到API的每一处细节都经过精心雕琢，非常适合界面的快速开发。">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+
+  <link rel="stylesheet" href="{{static_url('layui/css/layui.css')}}"  media="all">
+  <link rel="stylesheet" href="{{static_url('layui/global.css')}}" media="all">
+</head>
+<body class="site-home" id="LAY_home" style="background-color: #eee;" data-date="8-23">
+
+<div class="layui-header header header-index">
+  <div class="layui-main">
+    <a class="logo" href="/">
+      <img src="{{static_url('ksg_kefu_logo.png')}}" alt="ss">
+    </a>
+    <ul class="layui-nav">
+      <li class="layui-nav-item ">
+        <a href="/doc/">文档<!-- <span class="layui-badge-dot"></span> --></a>
+      </li>
+      <li class="layui-nav-item ">
+        <a href="/demo/">示例<!-- <span class="layui-badge-dot"></span> --></a>
+      </li>
+
+
+
+      <li class="layui-nav-item layui-hide-xs">
+        <a href="//fly.layui.com/" target="_blank">社区</a>
+      </li>
+
+      <li class="layui-nav-item">
+        <!--<span class="layui-badge-dot" style="margin: -4px 3px 0;"></span>-->
+        <a href="javascript:;">周边</a>
+        <dl class="layui-nav-child">
+          <dd class="layui-hide-sm layui-show-xs"><a href="#" target="_blank">消息插件</a><hr></dd>
+          <dd><a href="#" target="_blank">手机版</a></dd>
+
+          <hr>
+          <dd><a href="/admin/" target="_blank">金山软件</a></dd>
+          <dd><a href="/template/fly/" target="_blank">西山居游戏</a></dd>
+        </dl>
+      </li>
+
+      <li class="layui-nav-item layui-hide-xs" lay-unselect>
+        <a href="/admin/">企业用户入口<span class="layui-badge-dot"></span></a>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<div class="site-banner">
+  <div class="site-banner-bg" style="background-image: url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1535004006132&di=d931cd34bb3d13043db671374fafafa6&imgtype=0&src=http%3A%2F%2Fi8.download.fd.pchome.net%2Ft_960x600%2Fg1%2FM00%2F08%2F1E%2FoYYBAFOpFM6ISm-qABNxWxdzRzoAABomAKb3AIAE3Fz256.jpg); background-size: cover;">
+  </div>
+  <div class="site-banner-main">
+    <div class="site-zfj">
+      <!-- <i class="layui-icon" style="color: #fff; color: rgba(255,255,255,.7);">&#xe658;</i> -->
+    </div>
+    <div class="layui-anim site-desc">
+      <p class="web-font-desc" style="color: white; font-weight: bold; font-size: 58px;">共享客服工作平台</p>
+      <cite>共享客服工作系统，注册、选择企业、选择产品、选择时段，自由工作。</cite>
+    </div>
+    <div class="site-download">
+      <a cdn-href="https://cdn.layui.com/layui/layui-v2.3.0.zip?v=2" href="//res.layui.com/static/download/layui/layui-v2.3.0.zip?v=2" class="layui-inline site-down" target="_blank">
+        <cite class="layui-icon">&#xe66f;</cite>
+        立即注册
+      </a>
+    </div>
+    <div class="site-version">
+      <span>已经注册：</span>
+      <span><a href="/doc/base/changelog.html" rel="nofollow" target="_blank">现在登录</a></span>
+    </div>
+      <!--
+    <div class="site-banner-other">
+      <a href="https://github.com/sentsin/layui/" target="_blank" class="site-star">
+        <i class="layui-icon">&#xe658;</i>
+        Star <cite id="getStars"></cite>
+      </a>
+      <a href="https://github.com/sentsin/layui/network/members" target="_blank" rel="nofollow" class="site-fork">
+        <i class="layui-icon">&#xe62e;</i>
+        Fork
+      </a>
+      <a href="https://gitee.com/sentsin/layui" target="_blank" rel="nofollow" class="site-fork">
+        码云
+      </a>
+    </div>
+    -->
+  </div>
+</div>
+<div class="layui-main">
+
+
+
+  <ul class="site-idea">
+    <li>
+      <fieldset class="layui-elem-field layui-field-title">
+        <legend>卜算子</legend>
+        <p>黄州定惠院寓居作 缺月挂疏桐，漏断人初静。时见幽人独往来，缥缈孤鸿影。惊起却回头，有恨无人省。拣尽寒枝不肯栖，寂寞沙洲冷。</p>
+      </fieldset>
+    </li>
+    <li>
+      <fieldset class="layui-elem-field layui-field-title">
+        <legend>鹧鸪天</legend>
+        <p>林断山明竹隐墙，乱蝉衰草小池塘。翻空白鸟时时见，照水红蕖细细香。村舍外，古城旁，杖藜徐步转斜阳。殷勤昨夜三更雨，又得浮生一日凉。</p>
+      </fieldset>
+    </li>
+    <li>
+      <fieldset class="layui-elem-field layui-field-title">
+        <legend>浣溪沙</legend>
+        <p>麻叶层层苘叶光，谁家煮茧一村香。隔篱娇语络丝娘。垂白杖藜抬醉眼，捋青捣［麦少］软饥肠。问言豆叶几时黄。</p>
+      </fieldset>
+    </li>
+  </ul>
+
+</div>
+<div class="layui-footer footer footer-index">
+  <div class="layui-main">
+    <p>&copy; 2018 <a href="/">西山居</a> 客服中心</p>
+    <p>
+      <a href="#" target="_blank">案例</a>
+      <a href="#" target="_blank">支持</a>
+      <a href="javascript:;" site-event="contactInfo">联系</a>
+      <a href="#" target="_blank" rel="nofollow">西山居游戏</a>
+      <a href="#" target="_blank" rel="nofollow">金山软件</a>
+      <a href="#" target="_blank">微信公众号</a>
+      <a href="#" target="_blank" rel="nofollow">备案号</a>
+    </p>
+  </div>
+</div>
+<div class="site-tree-mobile layui-hide">
+  <i class="layui-icon">&#xe602;</i>
+</div>
+<div class="site-mobile-shade"></div>
+<script src="{{static_url('layui/layui.js')}}" charset="utf-8"></script>
+
+<script>
+var _hmt = _hmt || [];
+
+</script>
+
+</body>
+</html>
