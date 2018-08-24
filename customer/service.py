@@ -14,10 +14,11 @@ __author__ = 'caimmy'
 
 from tornado.web import url
 import bp
-from customer.customer_index import CustomerIndex, CustomerDashboard
+from customer.customer_index import CustomerIndex, CustomerDashboard, CustomerRegister
 
 def CreateBlueprint():
     return bp.Blueprint(r"customer", [
         url(r"/?", CustomerIndex, name="customer_frontpage_index"),
-        url(r"/dashboard?", CustomerDashboard, name="customer_frontpage_dashboard")
+        url(r"/dashboard/?", CustomerDashboard, name="customer_frontpage_dashboard"),
+        url(r"/register/?", CustomerRegister, name="customer_frontpage_register"),
     ])

@@ -21,3 +21,7 @@ class CustomerIndex(CustomerWebRequestHandler):
 class CustomerDashboard(CustomerWebRequestHandler):
     def get(self, *args, **kwargs):
         return self.render("frontpage/customer_dashboard.html")
+
+class CustomerRegister(CustomerWebRequestHandler):
+    def get(self, *args, **kwargs):
+        return self.render("frontpage/customer_register.html")
