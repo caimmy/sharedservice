@@ -17,7 +17,7 @@ from lib import SSWebDataRequestHandler
 from utils.wraps import web_authenticate, jsonp
 from models.mysql.tables import PlatUser
 from admin import AdminWebRequestHandler
-from tornado_ui.ui_methods import flash
+from tornado_ui.ui_methods import flash, enterprise_had_login
 
 class LoginRequestHandler(AdminWebRequestHandler):
     @jsonp
@@ -36,7 +36,7 @@ class LoginRequestHandler(AdminWebRequestHandler):
 
 class AdminloginRequestHandler(AdminWebRequestHandler):
     def get(self):
-        if self.current_user:
+        if enterprise_had_login(self):
             return self.redirect(self.reverse_url("admin_index"))
         return self.render("login.html")
 

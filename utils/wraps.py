@@ -24,10 +24,11 @@ def request_authenticate(method):
     '''
     @functools.wraps(method)
     def check_authentication(self, *args, **kwargs):
-        if not self.current_user:
-            self.write(json.dumps(makeResponse('login first please')))
-        else:
-            return method(self, *args, **kwargs)
+        if self.current_user:
+            user_info = self.session.get("user")
+            if user_info and user_info["side"] == "enterprise":
+                return method(self, *args, **kwargs)
+        self.write(json.dumps(makeResponse('login first please')))
     return check_authentication
 
 def web_authenticate(method):
@@ -38,10 +39,11 @@ def web_authenticate(method):
     '''
     @functools.wraps(method)
     def check_authentication(self, *args, **kwargs):
-        if not self.current_user:
-            return self.redirect(self.reverse_url('login'))
-        else:
-            return method(self, *args, **kwargs)
+        if self.current_user:
+            user_info = self.session.get("user")
+            if user_info and user_info["side"] == "enterprise":
+                return method(self, *args, **kwargs)
+        return self.redirect(self.reverse_url('login'))
     return check_authentication
 
 def web_customer_login(method):
@@ -50,10 +52,11 @@ def web_customer_login(method):
     """
     @functools.wraps(method)
     def check_authentication(self, *args, **kwargs):
-        if not self.current_user:
-            return self.redirect(self.reverse_url('customer_frontpage_login'))
-        else:
-            return method(self, *args, **kwargs)
+        if self.current_user:
+            user_info = self.session.get("user")
+            if user_info and user_info["side"] == "customer":
+                return method(self, *args, **kwargs)
+        return self.redirect(self.reverse_url('customer_frontpage_login'))
 
     return check_authentication
 

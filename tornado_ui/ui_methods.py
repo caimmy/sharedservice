@@ -42,6 +42,12 @@ def had_login(self):
     """
     return self.current_user
 
+def customer_had_login(self):
+    return self.current_user and self.current_user["side"] == "customer"
+
+def enterprise_had_login(self):
+    return self.current_user and self.current_user["side"] == "enterprise"
+
 def get_login_identify(self, prop):
     """
     获取当前登录用户的信息

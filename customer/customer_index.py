@@ -69,12 +69,12 @@ class CustomerLogin(CustomerWebRequestHandler):
             customer_user = self.db.query(Customer).filter(Customer.phone==phone).one()
             if customer_user and customer_user.checkPassword(pwd):
                 self.Login(customer_user.getAttributes())
-                self.redirect(self.reverse_url("customer_frontpage_dashboard"))
+                return self.redirect(self.reverse_url("customer_frontpage_dashboard"))
             else:
                 flash(self, "phone number not exists or invalid password.")
         else:
             flash(self, "parameter invalid")
-        self.redirect(self.reverse_url("customer_frontpage_login"))
+        return self.redirect(self.reverse_url("customer_frontpage_login"))
 
 class CustomerLogout(CustomerWebRequestHandler):
     def get(self, *args, **kwargs):

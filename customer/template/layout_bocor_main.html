@@ -62,7 +62,7 @@
                             <li><a href="#works">工作机会</a></li>
 
                             <li><a href="#contact">联系我们</a></li>
-                            {% if had_login() %}
+                            {% if customer_had_login() %}
                             <li><a href="{{reverse_url('customer_frontpage_logout')}}">{{ get_login_identify("name") }}（退出账号）</a></li>
                             {% end %}
                         </ul>
