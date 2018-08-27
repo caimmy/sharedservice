@@ -1,0 +1,41 @@
+{% extends "../layout_bocor_main.html" %}
+{% block title %}客服登陆{% end %}
+{% block content %}
+<div class="col-md-12">
+    <div class="container">
+        <div style="margin-top: 20px;"></div>
+        <div class="row marginbot-80">
+            <div class="col-md-8 col-md-offset-2">
+                <div id="sendmessage">Your message has been sent. Thank you!</div>
+                <div id="errormessage"></div>
+                <form id="contact-form" action="{{reverse_url('customer_frontpage_login')}}" method="post" role="form">
+                    {% raw xsrf_form_html() %}
+                    <div class="row marginbot-20">
+                        <div class="col-md-12 xs-marginbot-20">
+                            <div class="form-group">
+                                <input type="text" name="phone" class="form-control" id="phone" placeholder="手机号码"
+                                       data-rule="minlen:11" data-msg="姓名不能为空"/>
+                                <div class="validation"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row marginbot-20">
+                        <div class="col-md-12 xs-marginbot-20">
+                            <div class="form-group">
+                                <input type="password" name="pwd" class="form-control" id="pwd" placeholder="密码"
+                                       data-rule="minlen:2" data-msg="密码不能为空"/>
+                                <div class="validation"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button type="submit" class="btn btn-skin btn-lg btn-block">
+                                登录SS
+                            </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}

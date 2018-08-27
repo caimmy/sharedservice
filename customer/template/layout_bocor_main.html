@@ -56,12 +56,15 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="menu">
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="active"><a href="#intro">主页</a></li>
+                            <li class="active"><a href="{{reverse_url('customer_frontpage_index')}}">主页</a></li>
                             <li><a href="#about">关于我们</a></li>
                             <li><a href="#service">平台服务</a></li>
                             <li><a href="#works">工作机会</a></li>
 
                             <li><a href="#contact">联系我们</a></li>
+                            {% if had_login() %}
+                            <li><a href="{{reverse_url('customer_frontpage_logout')}}">{{ get_login_identify("name") }}（退出账号）</a></li>
+                            {% end %}
                         </ul>
                     </div>
                     <!-- /.Navbar-collapse -->
@@ -72,8 +75,26 @@
         <!-- /.container -->
     </nav>
 </div>
-{% block content %}
-{% end %}
+<div class="content-wrapper">
+    {% for flash_msg in get_flashed_messages() %}
+    {% if flash_msg["category"] == "error" %}
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-check"></i> Error!</h4>
+        {{ flash_msg["message"] }}
+    </div>
+    {% else %}
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+        {{ flash_msg["message"] }}
+    </div>
+    {% end %}
+    {% end %}
+    <!-- Main content -->
+    {% block content %}{% end %}
+    <!-- /.content -->
+</div>
 <!-- /Section: contact -->
 
 
@@ -81,10 +102,12 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
+                <!--
                 <ul class="footer-menu">
                     <li><a href="#">Home</a></li>
                     <li><a href="#">Press release</a></li>
                 </ul>
+                -->
             </div>
             <div class="col-md-6 text-right copyright">
                 &copy;西山居

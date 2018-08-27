@@ -16,7 +16,8 @@ from models.mysql.db import Base
 from datetime import datetime
 from sqlalchemy import Column, Integer, VARCHAR, DateTime, TEXT, ForeignKey, Enum
 from sqlalchemy.orm import relationship
-from models import ENUM_VALID, ENUM_INVALID, ENUM_DELETE, USER_CREATE_METHOD_AUTO, USER_CREATE_METHOD_ENTERPRISE, USER_CREATE_METHOD_SYSTEM
+from models import ENUM_VALID, ENUM_INVALID, ENUM_DELETE, USER_CREATE_METHOD_AUTO, USER_CREATE_METHOD_ENTERPRISE, \
+    USER_CREATE_METHOD_SYSTEM, ENUM_GENDER_FEMALE, ENUM_GENDER_MALE
 from models.mysql.tables import Enterprise
 from models import PasswordBase
 
@@ -55,9 +56,17 @@ class Customer(Base, PasswordBase):
     phone           = Column(VARCHAR(20), nullable=False, unique=True, index=True, comment='客服联系电话')
     salt            = Column(VARCHAR(6), nullable=False, comment='密码salt')
     passwd          = Column(VARCHAR(128), nullable=False, comment='客服账号密码')
-    status          = Column(Enum(ENUM_VALID, ENUM_INVALID, ENUM_DELETE), default=ENUM_INVALID, comment='客服账号状态')
+    gender          = Column(Enum(ENUM_GENDER_FEMALE, ENUM_GENDER_MALE), default=ENUM_GENDER_FEMALE, comment='客服账号性别')
+    status          = Column(Enum(ENUM_VALID, ENUM_INVALID, ENUM_DELETE), default=ENUM_VALID, comment='客服账号状态')
     create_tm       = Column(DateTime, default=datetime.now(), comment='客服账号的创建时间')
     create_platuid  = Column(Integer, default=0, comment="创建客服账号的平台用户编号， 0标识玩家自助注册账号")
+
+    def getAttributes(self):
+        '''
+        获取用户模型的属性
+        :return: dict
+        '''
+        return {"id": self.id, "name": self.name, "phone": self.phone, "gender": self.gender, "side": "customer"}
 
     def __repr__(self):
         return '<<Table> Custom_user> : id: {id}, name: {name}, phone: {phone}, create_tm: {create_tm}'.format(

@@ -23,6 +23,12 @@ ENUM_INVALID      = '0'
 ENUM_DELETE       = '2'
 
 '''
+性别
+'''
+ENUM_GENDER_MALE    = '1'
+ENUM_GENDER_FEMALE  = '0'
+
+'''
 创建用户的三种途径
 '''
 USER_CREATE_METHOD_AUTO         = "auto"

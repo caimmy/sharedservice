@@ -42,7 +42,7 @@ class PlatUser(Base, PasswordBase):
         获取用户模型的属性
         :return: dict
         '''
-        return {"id": self.id, "name": self.name, "email": self.email, "phone": self.phone, "ep": self.ep}
+        return {"id": self.id, "name": self.name, "email": self.email, "phone": self.phone, "ep": self.ep, "side": "enterprise"}
 
     def __repr__(self):
         return "<<Table> Plat_user> : id {_id}, phone: {_p}, name: {_name}, ep: {_ep}".format(_id=self.id,

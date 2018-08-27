@@ -9,12 +9,13 @@
             <div class="col-md-8 col-md-offset-2">
                 <div id="sendmessage">Your message has been sent. Thank you!</div>
                 <div id="errormessage"></div>
-                <form id="contact-form" action="" method="post" role="form" class="contactForm">
+                <form id="contact-form" action="{{reverse_url('customer_frontpage_register')}}" method="post" role="form">
+                    {% raw xsrf_form_html() %}
                     <div class="row marginbot-20">
                         <div class="col-md-6 xs-marginbot-20">
                             <div class="form-group">
-                                <input type="text" name="name" class="form-control" id="name" placeholder="您的姓名"
-                                       data-rule="minlen:4" data-msg="姓名不能为空"/>
+                                <input type="text" name="username" class="form-control" id="name" placeholder="您的姓名"
+                                       data-rule="minlen:2" data-msg="姓名不能为空"/>
                                 <div class="validation"></div>
                             </div>
                         </div>
@@ -25,7 +26,7 @@
                                        placeholder="您的邮箱" data-rule="email"
                                        data-msg="Please enter a valid email"/>
                                  -->
-                                <select class="form-control">
+                                <select name="gender" class="form-control">
                                     <option value="0">女</option>
                                     <option value="1">男</option>
                                 </select>
@@ -36,15 +37,15 @@
                     <div class="row marginbot-20">
                         <div class="col-md-6 xs-marginbot-20">
                             <div class="form-group">
-                                <input type="text" name="name" class="form-control" placeholder="您的手机号码"
-                                       data-rule="minlen:4" data-msg="手机号码不正确"/>
+                                <input type="text" name="phone" class="form-control" placeholder="您的手机号码"
+                                       data-rule="minlen:11" data-msg="手机号码不正确"/>
                                 <div class="validation"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="email" class="form-control" name="email"
-                                       placeholder="短信验证码" data-rule="email"
+                                <input type="text" class="form-control" name="code"
+                                       placeholder="短信验证码" data-rule="minLen:4"
                                        data-msg="短信验证码不正确"/>
                                 <div class="validation"></div>
                             </div>
@@ -57,7 +58,7 @@
                                           data-msg="填写一些其他信息" placeholder="其他一些信息"></textarea>
                                 <div class="validation"></div>
                             </div>
-                            <button type="submit" class="btn btn-skin btn-lg btn-block" id="btnContactUs">
+                            <button type="submit" class="btn btn-skin btn-lg btn-block">
                                 提交注册信息
                             </button>
                         </div>
@@ -89,7 +90,7 @@
 
 <script type="text/javascript">
     $(function() {
-        $("#dialog_tips").modal({});
+        $("#dialog_tips").modal({keyboard: false, backdrop:false});
     }());
 
     function return_frontpage() {

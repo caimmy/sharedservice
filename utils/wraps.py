@@ -44,6 +44,18 @@ def web_authenticate(method):
             return method(self, *args, **kwargs)
     return check_authentication
 
+def web_customer_login(method):
+    """
+    客服使用服务侧业务时，判断账号是否登陆，如果是限制登陆的页面，需要强制用户进行登录
+    """
+    @functools.wraps(method)
+    def check_authentication(self, *args, **kwargs):
+        if not self.current_user:
+            return self.redirect(self.reverse_url('customer_frontpage_login'))
+        else:
+            return method(self, *args, **kwargs)
+
+    return check_authentication
 
 def jsonp(method):
     '''

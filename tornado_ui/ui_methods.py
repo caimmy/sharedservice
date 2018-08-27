@@ -35,6 +35,13 @@ def get_flashed_messages(self):
     else:
         return []
 
+def had_login(self):
+    """
+    判断当前用户是否未登录
+    @return true登录，false未登录
+    """
+    return self.current_user
+
 def get_login_identify(self, prop):
     """
     获取当前登录用户的信息
