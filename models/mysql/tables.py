@@ -20,6 +20,7 @@ from sqlalchemy.orm import relationship
 from models.mysql.db import Base
 from models import PasswordBase
 from utils.tools import genSalt, ensureBytes
+from const_defines import SIDE_ROLE_ENTERPRISE
 
 class PlatUser(Base, PasswordBase):
     __tablename__   = 'plat_user'
@@ -42,7 +43,7 @@ class PlatUser(Base, PasswordBase):
         获取用户模型的属性
         :return: dict
         '''
-        return {"id": self.id, "name": self.name, "email": self.email, "phone": self.phone, "ep": self.ep, "side": "enterprise"}
+        return {"id": self.id, "name": self.name, "email": self.email, "phone": self.phone, "ep": self.ep, "side": SIDE_ROLE_ENTERPRISE}
 
     def __repr__(self):
         return "<<Table> Plat_user> : id {_id}, phone: {_p}, name: {_name}, ep: {_ep}".format(_id=self.id,

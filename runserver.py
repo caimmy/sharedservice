@@ -23,6 +23,7 @@ import im.service
 import exam.service
 import admin.service
 import customer.service
+import userinterface.service
 
 from admin.uimodules import admin_ui
 from tornado_ui import ui_methods
@@ -50,7 +51,8 @@ def MakeApplication():
     prehander_urls = mergeBlueprintUrls(im.service.CreateBlueprint(),
                                         exam.service.CreateBlueprint(),
                                         admin.service.CreateBlueprint(),
-                                        customer.service.CreateBlueprint())
+                                        customer.service.CreateBlueprint(),
+                                        userinterface.service.CreateBlueprint())
     app = SSApplication([], **APP_SETTINGS)
     app.default_router.add_rules(prehander_urls)
     app.default_router.add_rules([(r"/?", DemoHandler)])

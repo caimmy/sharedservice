@@ -1,0 +1,47 @@
+{% extends "../layout_bocor_main.html" %}
+{% block title %}文字服务进行中...{% end %}
+<script type="text/javascript" src="{{ static_url('mimc/mimc-min_1_0_1.js') }}"></script>
+{% block content %}
+
+<div class="col-md-12">
+    <div class="container">
+        <div class='tabbable tabs-left'>
+
+    <!--
+      选项卡：通过BS的类来控制选项卡的样式
+    -->
+    <ul class='nav nav-tabs'>
+      <li class='active'><a href='#tab1' data-toggle='tab'>选项一</a></li>
+      <li><a href='#tab2' data-toggle='tab'>选项二</a></li>
+      <li><a href='#tab3' data-toggle='tab'>选项三</a></li>
+      <li><a href='#tab4' data-toggle='tab'>选项四</a></li>
+      <li><a href='#tab5' data-toggle='tab'>选项五</a></li>
+    </ul>
+
+    <!--
+      选项卡的内容定义
+    -->
+    <div class='tab-content'>
+      <div class='tab-pane active' id='tab1'>我是选项卡一的内容</div>
+      <div class='tab-pane' id='tab2'>
+          <div>
+              <textarea style="width: 100%; resize: none;" rows="20px;"></textarea>
+          </div>
+          <input style="width: 90%;" type="text"><button type="button" style="width: 10%;">回复</button>
+      </div>
+      <div class='tab-pane' id='tab3'>我是选项卡三的内容</div>
+      <div class='tab-pane' id='tab4'>我是选项卡四的内容</div>
+      <div class='tab-pane' id='tab5'>我是选项卡五的内容</div>
+    </div>
+  </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var user = null;
+    var account = "{{ }}";
+    $(function () {
+
+    }());
+</script>
+{% end %}

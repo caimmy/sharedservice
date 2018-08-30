@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>shareservice customer {% block title %}{% end %}</title>
+    <title>{% block title %}{% end %} - shareservice customer</title>
 
     <!-- css -->
     <link rel="stylesheet" href="{{static_url('bocor/css/bootstrap.min.css')}}">
@@ -63,8 +63,21 @@
 
                             <li><a href="#contact">联系我们</a></li>
                             {% if customer_had_login() %}
-                            <li><a href="{{reverse_url('customer_frontpage_logout')}}">{{ get_login_identify("name") }}（退出账号）</a></li>
-                            {% end %}
+
+                            <li id="fat-menu" class="dropdown">
+                                <a id="drop3" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-haspopup="true" aria-expanded="true">
+                                    我的服务
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="drop3">
+                                    <li><a href="{{ reverse_url('customer_txt_live_service') }}">进入文字客服</a></li>
+                                    <li><a href="#">进入视频服务</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="{{reverse_url('customer_frontpage_logout')}}">{{ get_login_identify("name") }}（退出账号）</a></li>
+                                </ul>
+                            </li>
+                                {% end %}
                         </ul>
                     </div>
                     <!-- /.Navbar-collapse -->
@@ -92,25 +105,19 @@
     {% end %}
     {% end %}
     <!-- Main content -->
-    {% block content %}{% end %}
+    <section id="works" class="bg-white" style="margin-top: 5px; margin-bottom: 5px;">
+        {% block content %}{% end %}
+    </section>
+
     <!-- /.content -->
 </div>
 <!-- /Section: contact -->
 
-
 <footer>
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
-                <!--
-                <ul class="footer-menu">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Press release</a></li>
-                </ul>
-                -->
-            </div>
-            <div class="col-md-6 text-right copyright">
-                &copy;西山居
+            <div class="col-md-6 col-md-offset-6 text-right copyright">
+                &copy; <a href="#">共享客服计划</a> By {{ year_label() }}
                 <div class="credits">
                     <!--
                       All the links in the footer should remain intact.
@@ -118,12 +125,13 @@
                       Licensing information: https://bootstrapmade.com/license/
                       Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Bocor
                     -->
-                    Designed by <a href="#">成都技术组</a>
+
                 </div>
             </div>
         </div>
     </div>
 </footer>
+
 
 </body>
 </html>

@@ -15,6 +15,7 @@ import json
 import functools
 from lib import makeResponse
 from utils import ensureBytes, ensureString
+from const_defines import SIDE_ROLE_ENTERPRISE, SIDE_ROLE_CUSTOMER
 
 def request_authenticate(method):
     '''
@@ -26,7 +27,7 @@ def request_authenticate(method):
     def check_authentication(self, *args, **kwargs):
         if self.current_user:
             user_info = self.session.get("user")
-            if user_info and user_info["side"] == "enterprise":
+            if user_info and user_info["side"] == SIDE_ROLE_ENTERPRISE:
                 return method(self, *args, **kwargs)
         self.write(json.dumps(makeResponse('login first please')))
     return check_authentication
@@ -41,7 +42,7 @@ def web_authenticate(method):
     def check_authentication(self, *args, **kwargs):
         if self.current_user:
             user_info = self.session.get("user")
-            if user_info and user_info["side"] == "enterprise":
+            if user_info and user_info["side"] == SIDE_ROLE_ENTERPRISE:
                 return method(self, *args, **kwargs)
         return self.redirect(self.reverse_url('login'))
     return check_authentication
@@ -54,7 +55,7 @@ def web_customer_login(method):
     def check_authentication(self, *args, **kwargs):
         if self.current_user:
             user_info = self.session.get("user")
-            if user_info and user_info["side"] == "customer":
+            if user_info and user_info["side"] == SIDE_ROLE_CUSTOMER:
                 return method(self, *args, **kwargs)
         return self.redirect(self.reverse_url('customer_frontpage_login'))
 

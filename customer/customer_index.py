@@ -66,7 +66,7 @@ class CustomerLogin(CustomerWebRequestHandler):
     def post(self, *args, **kwargs):
         phone, pwd = self.getArgument_list("phone", "pwd")
         if all((phone, pwd)):
-            customer_user = self.db.query(Customer).filter(Customer.phone==phone).one()
+            customer_user = self.db.query(Customer).filter(Customer.phone==phone).first()
             if customer_user and customer_user.checkPassword(pwd):
                 self.Login(customer_user.getAttributes())
                 return self.redirect(self.reverse_url("customer_frontpage_dashboard"))

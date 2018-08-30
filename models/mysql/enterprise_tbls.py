@@ -20,6 +20,7 @@ from models import ENUM_VALID, ENUM_INVALID, ENUM_DELETE, USER_CREATE_METHOD_AUT
     USER_CREATE_METHOD_SYSTEM, ENUM_GENDER_FEMALE, ENUM_GENDER_MALE
 from models.mysql.tables import Enterprise
 from models import PasswordBase
+from const_defines import SIDE_ROLE_CUSTOMER, SIDE_ROLE_ENTERPRISE
 
 class MProduct(Base):
     """
@@ -52,6 +53,7 @@ class Customer(Base, PasswordBase):
     __tablename__   = 'custom_user'
 
     id              = Column(Integer, primary_key=True, autoincrement=True)
+    hashid          = Column(VARCHAR(128), nullable=False, unique=True, index=True, comment="哈希后的数据编号")
     name            = Column(VARCHAR(128), nullable=False, comment='客服名称')
     phone           = Column(VARCHAR(20), nullable=False, unique=True, index=True, comment='客服联系电话')
     salt            = Column(VARCHAR(6), nullable=False, comment='密码salt')
@@ -66,7 +68,7 @@ class Customer(Base, PasswordBase):
         获取用户模型的属性
         :return: dict
         '''
-        return {"id": self.id, "name": self.name, "phone": self.phone, "gender": self.gender, "side": "customer"}
+        return {"id": self.id, "name": self.name, "phone": self.phone, "gender": self.gender, "side": SIDE_ROLE_CUSTOMER}
 
     def __repr__(self):
         return '<<Table> Custom_user> : id: {id}, name: {name}, phone: {phone}, create_tm: {create_tm}'.format(

@@ -17,7 +17,6 @@ from tornado.log import gen_log
 from admin import AdminWebRequestHandler
 from models.mysql.enterprise_tbls import Enterprise, MProduct, ProductQuestion, ProductQuestionRel
 from tornado_ui.ui_methods import flash
-from sqlalchemy import and_
 
 class QuestionIndex(AdminWebRequestHandler):
     """

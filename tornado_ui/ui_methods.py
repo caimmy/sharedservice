@@ -12,6 +12,8 @@
 """
 __author__ = 'caimmy'
 
+from datetime import datetime
+
 def flash(self, message, category="error"):
     """
     设置消息闪现的消息缓存
@@ -71,3 +73,8 @@ def full_url(self, url_name, parameters):
         _p = parameters[1:] if parameters.startswith("?") else parameters
     return url + _p
 
+def year_label(self):
+    """
+    获取当前时间（年）
+    """
+    return datetime.now().year
