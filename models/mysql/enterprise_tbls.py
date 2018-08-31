@@ -68,7 +68,7 @@ class Customer(Base, PasswordBase):
         获取用户模型的属性
         :return: dict
         '''
-        return {"id": self.id, "name": self.name, "phone": self.phone, "gender": self.gender, "side": SIDE_ROLE_CUSTOMER}
+        return {"id": self.id, "hashid": self.hashid, "name": self.name, "phone": self.phone, "gender": self.gender, "side": SIDE_ROLE_CUSTOMER}
 
     def __repr__(self):
         return '<<Table> Custom_user> : id: {id}, name: {name}, phone: {phone}, create_tm: {create_tm}'.format(

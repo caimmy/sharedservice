@@ -107,6 +107,10 @@ class SSWebRequestHandler(tornado.web.RequestHandler):
 
 class SSWebDataRequestHandler(SSWebRequestHandler):
 
+    def __init__(self, application, request, **kwargs):
+        super(SSWebDataRequestHandler, self).__init__(application, request, **kwargs)
+        self.response = {"code": -1, "success": False, "msg": "gen err"}
+
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "x-requested-with,authorization")
@@ -118,10 +122,10 @@ class SSWebDataRequestHandler(SSWebRequestHandler):
         :param data:
         :return:
         '''
-        self.response['code'] = 0
-        self.response['success'] = True
-        self.response['msg'] = 'success'
-        self.data = data
+        self.response["code"]       = 0
+        self.response["success"]    = True
+        self.response["msg"]        = "ok"
+        self.response["data"]       = data
 
     def setResponseMsg(self, msg, code=-1):
         '''

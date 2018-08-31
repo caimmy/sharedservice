@@ -20,6 +20,7 @@ from tornado_ui.ui_methods import flash
 
 from models.mysql.enterprise_tbls import Customer
 from utils.wraps import web_customer_login
+from utils.ids import hash_ids
 
 class CustomerIndex(CustomerWebRequestHandler):
     def get(self, *args, **kwargs):
@@ -45,8 +46,11 @@ class CustomerRegister(CustomerWebRequestHandler):
                     customer.phone = phone
                     customer.passwd = p
                     customer.salt = s
+                    customer.hashid = ""
                     customer.gender = gender
                     self.db.add(customer)
+                    self.db.flush()
+                    customer.hashid = hash_ids(customer.id)
                     self.db.commit()
                     return self.redirect(self.reverse_url("customer_frontpage_index"))
                 else:
@@ -61,6 +65,11 @@ class CustomerRegister(CustomerWebRequestHandler):
 
 class CustomerLogin(CustomerWebRequestHandler):
     def get(self, *args, **kwargs):
+        from const_defines import SIDE_ROLE_CUSTOMER
+        if self.current_user:
+            user_info = self.session.get("user")
+            if user_info and user_info["side"] == SIDE_ROLE_CUSTOMER:
+                return self.redirect(self.reverse_url("customer_frontpage_dashboard"))
         return self.render("frontpage/customer_login.html")
 
     def post(self, *args, **kwargs):

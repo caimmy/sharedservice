@@ -41,7 +41,7 @@ def unhash_ids(code):
 
 if "__main__" == __name__:
 
-    m = hash_ids(1314)
+    m = hash_ids(5)
     print(m)
 
     n = unhash_ids(m)

@@ -1,47 +1,109 @@
 {% extends "../layout_bocor_main.html" %}
 {% block title %}文字服务进行中...{% end %}
+{% block ext_headers %}
 <script type="text/javascript" src="{{ static_url('mimc/mimc-min_1_0_1.js') }}"></script>
+{% end %}
 {% block content %}
 
 <div class="col-md-12">
     <div class="container">
         <div class='tabbable tabs-left'>
 
-    <!--
-      选项卡：通过BS的类来控制选项卡的样式
-    -->
-    <ul class='nav nav-tabs'>
-      <li class='active'><a href='#tab1' data-toggle='tab'>选项一</a></li>
-      <li><a href='#tab2' data-toggle='tab'>选项二</a></li>
-      <li><a href='#tab3' data-toggle='tab'>选项三</a></li>
-      <li><a href='#tab4' data-toggle='tab'>选项四</a></li>
-      <li><a href='#tab5' data-toggle='tab'>选项五</a></li>
-    </ul>
+            <!--
+              选项卡：通过BS的类来控制选项卡的样式
+            -->
+            <ul class='nav nav-tabs'>
+                <li class='active'><a href='#tab1' data-toggle='tab'>选项一</a></li>
+                <li><a href='#tab2' data-toggle='tab'>选项二</a></li>
+                <li><a href='#tab3' data-toggle='tab'>选项三</a></li>
+                <li><a href='#tab4' data-toggle='tab'>选项四</a></li>
+                <li><a href='#tab5' data-toggle='tab'>选项五</a></li>
+            </ul>
 
-    <!--
-      选项卡的内容定义
-    -->
-    <div class='tab-content'>
-      <div class='tab-pane active' id='tab1'>我是选项卡一的内容</div>
-      <div class='tab-pane' id='tab2'>
-          <div>
-              <textarea style="width: 100%; resize: none;" rows="20px;"></textarea>
-          </div>
-          <input style="width: 90%;" type="text"><button type="button" style="width: 10%;">回复</button>
-      </div>
-      <div class='tab-pane' id='tab3'>我是选项卡三的内容</div>
-      <div class='tab-pane' id='tab4'>我是选项卡四的内容</div>
-      <div class='tab-pane' id='tab5'>我是选项卡五的内容</div>
-    </div>
-  </div>
+            <!--
+              选项卡的内容定义
+            -->
+            <div class='tab-content'>
+                <div class='tab-pane active' id='tab1'>我是选项卡一的内容</div>
+                <div class='tab-pane' id='tab2'>
+                    <div>
+                        <textarea style="width: 100%; resize: none;" rows="20px;"></textarea>
+                    </div>
+                    <input style="width: 90%;" type="text">
+                    <button type="button" style="width: 10%;">回复</button>
+                </div>
+                <div class='tab-pane' id='tab3'>我是选项卡三的内容</div>
+                <div class='tab-pane' id='tab4'>我是选项卡四的内容</div>
+                <div class='tab-pane' id='tab5'>我是选项卡五的内容</div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script type="text/javascript">
+    var live_proxy = "{{ msg_proxy }}";
     var user = null;
-    var account = "{{ }}";
+    var account = "{{ live_account }}";
     $(function () {
+        user = new MIMCUser(account);
 
+        $.get("{{ reverse_url('mimc_token_refresh') }}", {account: account, _xsrf:getCookie("_xsrf")}, function (resp) {
+            if (resp.success) {
+                user.registerFetchToken(function () {
+                    return JSON.parse(resp.data);
+                });
+                user.login();
+            } else {
+                alert("fetch token failure");
+            }
+        }, "json");
+
+        // 在线状态变化
+        user.registerStatusChange(function (bindResult, errType, errReason, errDesc) {
+            console.log("----------------- status change ------------------");
+            console.log(bindResult);
+            console.log(errType);
+            console.log(errReason);
+            console.log(errDesc);
+            console.log("--------------------------------------------------");
+        })
+
+        // 服务器响应回调
+        user.registerServerAckHandler(function (packetId, sequence, timeStamp, errMsg) {
+            console.log("----------------- server ack ------------------");
+            console.log(packetId);
+            console.log(sequence);
+            console.log(timeStamp);
+            console.log(errMsg);
+            console.log("--------------------------------------------------");
+        })
+
+        // 接收单聊消息回调
+        user.registerP2PMsgHandler(function (P2PMsg) {
+            console.log("----------------- p2p message ------------------");
+            console.log(P2PMsg.getPacketId());
+            console.log(P2PMsg.getSequence());
+            console.log(P2PMsg.getFromAccount());
+            console.log(P2PMsg.getTimeStamp());
+            console.log(P2PMsg.getPayload());
+            console.log("--------------------------------------------------");
+        })
+
+        // 接收群聊消息回调
+        user.registerGroupMsgHandler(function (P2TMsg) {
+            console.log("----------------- p2t message ------------------");
+            console.log(P2TMsg.getPacketId());
+            console.log(P2TMsg.getSequence());
+            console.log(P2TMsg.getFromAccount());
+            console.log(P2TMsg.getTimeStamp());
+            console.log(P2TMsg.getPayload());
+            console.log("--------------------------------------------------");
+        })
+
+        // 连接断开回调
+        user.registerDisconnHandler(function () {
+            console.log("----------------- disconnection ------------------");
+        })
     }());
 </script>
 {% end %}

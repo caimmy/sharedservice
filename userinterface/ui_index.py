@@ -13,8 +13,13 @@ Change Activity:
 __author__ = 'caimmy'
 
 from userinterface import UserinterfaceWebRequestHandler
-
+from ssmain.messager.msg_factory import MakeMessagerInterface
+from config import MESSAGER_LIVE_PROXY
 
 class TextserviceRequestHandler(UserinterfaceWebRequestHandler):
     def get(self, *args, **kwargs):
-        return self.render("text_service.html")
+        chat_proxy = MakeMessagerInterface(MESSAGER_LIVE_PROXY)
+
+        return self.render("text_service.html",
+                           visitor=chat_proxy.GetTempAccount(),
+                           msg_proxy=MESSAGER_LIVE_PROXY)

@@ -12,6 +12,8 @@
 """
 __author__ = 'caimmy'
 
+APPNAME         = "ss"
+
 DEBUG_MODE      = True
 
 MYSQL_HOST      = '127.0.0.1'
@@ -24,3 +26,9 @@ MYSQL_DBNAME    = 'ss'
 REDIS_HOST      = "localhost"
 REDIS_PORT      = 6379
 REDIS_DB        = 0
+
+# middle ware settings
+MESSAGER_LIVE_PROXY         = "mimc"
+MIMC_APP_ID                 = "2882303761517785685"
+MIMC_APP_KEY                = "5541778587685"
+MIMC_APP_SECRET             = "MAa+9Zn+hznwXS8Eto2Hog=="

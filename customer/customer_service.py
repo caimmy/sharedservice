@@ -13,8 +13,14 @@ Change Activity:
 __author__ = 'caimmy'
 
 from customer import CustomerWebRequestHandler
+from ssmain.messager.msg_factory import MakeMessagerInterface
+from config import MESSAGER_LIVE_PROXY
+
 
 class TxtliveServiceIndex(CustomerWebRequestHandler):
     def get(self, *args, **kwargs):
-
-        return self.render("service/txtlive_service.html")
+        messager_live = MakeMessagerInterface(MESSAGER_LIVE_PROXY)
+        live_account = messager_live.GetAccount(self.user.get("hashid"))
+        return self.render("service/txtlive_service.html",
+                           live_account=live_account,
+                           msg_proxy=MESSAGER_LIVE_PROXY)
