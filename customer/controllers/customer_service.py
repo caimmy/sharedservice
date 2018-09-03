@@ -13,6 +13,7 @@ Change Activity:
 __author__ = 'caimmy'
 
 from customer import CustomerWebRequestHandler
+from tornado_ui.ui_methods import full_url
 from ssmain.messager.msg_factory import MakeMessagerInterface
 from config import MESSAGER_LIVE_PROXY
 
@@ -23,4 +24,5 @@ class TxtliveServiceIndex(CustomerWebRequestHandler):
         live_account = messager_live.GetAccount(self.user.get("hashid"))
         return self.render("service/txtlive_service.html",
                            live_account=live_account,
-                           msg_proxy=MESSAGER_LIVE_PROXY)
+                           msg_proxy=MESSAGER_LIVE_PROXY,
+                           service_keepalive=full_url(self, "ws_keepalive", None, ws=True))

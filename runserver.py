@@ -37,7 +37,9 @@ APP_SETTINGS = {
     "xsrf_cookies": True,
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
     "ui_modules": admin_ui,
-    "ui_methods": ui_methods
+    "ui_methods": ui_methods,
+    #"websocket_ping_interval": 3,
+    #"websocket_ping_timeout": 30
 }
 
 class DemoHandler(tornado.web.RequestHandler):

@@ -16,12 +16,12 @@ from tornado.web import url
 import bp
 import tornado
 
-from admin.authentication import LoginRequestHandler, RegisterRequestHandler, IndexRequestHandler, AdminloginRequestHandler, \
+from admin.controllers.authentication import LoginRequestHandler, RegisterRequestHandler, IndexRequestHandler, AdminloginRequestHandler, \
     AdminlogoutRequestHandler, ResetPasswordRequestHandler
-from admin.productadmin import ProductIndex, ProductCreate, ProductConfig
-from admin.article_mgr import ArticleIndex, ArticleCreate
-from admin.customer_mgr import CustomerIndex, CustomerCreate, CustomerDetail
-from admin.question_mgr import QuestionIndex, QuestionCreate
+from admin.controllers.productadmin import ProductIndex, ProductCreate, ProductConfig
+from admin.controllers.article_mgr import ArticleIndex, ArticleCreate
+from admin.controllers.customer_mgr import CustomerIndex, CustomerCreate, CustomerDetail
+from admin.controllers.question_mgr import QuestionIndex, QuestionCreate
 from admin import AdminWebRequestHandler
 
 

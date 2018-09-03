@@ -59,10 +59,18 @@ def get_login_identify(self, prop):
     cur_user = self.session.get("user")
     return cur_user[prop] if cur_user and prop in cur_user else ''
 
-def full_url(self, url_name, parameters):
+def full_url(self, url_name, parameters, absolute=False, ws=False):
     """
     构造完整的url
     """
+    _protocal_switch = {"http": "ws", "https": "wss"}
+    prefix = ""
+    if ws:
+        # 当需要构造websocket地址时，路径应该是绝对路径
+        absolute = True
+    if absolute:
+        _protocol = _protocal_switch[self.request.protocol] if ws else self.request.protocol
+        prefix = "{_p}://{_h}".format(_p=_protocol, _h=self.request.host)
     url = self.reverse_url(url_name)
     _p = ""
     if str(url).rfind("?") < 0:
@@ -71,7 +79,7 @@ def full_url(self, url_name, parameters):
         _p = "&".join([t+"="+str(parameters[t]) for t in parameters])
     elif isinstance(parameters, str):
         _p = parameters[1:] if parameters.startswith("?") else parameters
-    return url + _p
+    return "{_pf}{_url}{_param}".format(_pf=prefix, _url=url, _param=_p)
 
 def year_label(self):
     """

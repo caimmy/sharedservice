@@ -14,8 +14,8 @@ __author__ = 'caimmy'
 
 from tornado.web import url
 import bp
-from customer.customer_index import CustomerIndex, CustomerDashboard, CustomerRegister, CustomerLogin, CustomerLogout
-from customer.customer_service import TxtliveServiceIndex
+from customer.controllers.customer_index import CustomerIndex, CustomerDashboard, CustomerRegister, CustomerLogin, CustomerLogout
+from customer.controllers.customer_service import TxtliveServiceIndex
 
 def CreateBlueprint():
     return bp.Blueprint(r"customer", [

@@ -16,13 +16,18 @@ APPNAME         = "ss"
 
 DEBUG_MODE      = True
 
+# MYSQL SETTING
 MYSQL_HOST      = '127.0.0.1'
 MYSQL_PORT      = 3306
 MYSQL_USER      = 'ss'
 MYSQL_PAWD      = 'Abcd$1234'
 MYSQL_DBNAME    = 'ss'
 
+# MONGODB SETTING
+MONGODB_HOST    = "127.0.0.1"
+MONGODB_PORT    = 27017
 
+# REDIS SETTING
 REDIS_HOST      = "localhost"
 REDIS_PORT      = 6379
 REDIS_DB        = 0

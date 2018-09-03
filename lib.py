@@ -14,6 +14,8 @@ __author__ = 'caimmy'
 
 import json
 import tornado.web
+import tornado.websocket
+import pymongo
 import SSExceptions
 from sqlalchemy.orm import sessionmaker, scoped_session
 from utils.tools import LoadYAML2Object
@@ -21,6 +23,7 @@ from models.yaml import MimcConfig
 from utils.tor_session import SessionData
 
 from models.mysql.db import engine
+from config import MONGODB_HOST, MONGODB_PORT
 
 def makeResponse(msg=''):
     return {'code': -1, 'msg': msg, 'success': False, 'data': None}
@@ -30,6 +33,7 @@ class SSApplication(tornado.web.Application):
     def __init__(self, handlers, **settings):
         super(SSApplication, self).__init__(handlers, **settings)
         self.db = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=True, expire_on_commit=False))
+        self.mongodb = pymongo.MongoClient(host=MONGODB_HOST, port=MONGODB_PORT)
         self.yaml = LoadYAML2Object('./config.yaml', MimcConfig())
 
     def RegisterBlueprint(self, blueprint):
@@ -39,7 +43,7 @@ class SSApplication(tornado.web.Application):
         '''
         self.default_router.add_rules(blueprint.GetSubRouters())
 
-class SSWebRequestHandler(tornado.web.RequestHandler):
+class SSWebRequestHandler(tornado.websocket.WebSocketHandler):
     version = 1.0
 
     def __init__(self, application, request, **kwargs):
@@ -90,6 +94,10 @@ class SSWebRequestHandler(tornado.web.RequestHandler):
     @property
     def db(self):
         return self.application.db
+
+    @property
+    def mongodb(self):
+        return self.application.mongodb
 
     @property
     def yaml(self):
