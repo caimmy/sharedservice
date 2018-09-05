@@ -76,3 +76,15 @@ def jsonp(method):
         requestHandler.write(ensureBytes(content))
         requestHandler.finish()
     return jsonp_func
+
+
+def singleton(cls):
+    """
+    确保生成类符合单例的装饰器
+    """
+    instances = {}
+    def getinstance(*args,**kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args,**kwargs)
+        return instances[cls]
+    return getinstance

@@ -18,6 +18,9 @@ from config import APPNAME
 
 class MIMCMessager(MessagerAbstract):
     def GetAccount(self, account):
+        """
+        构造chat账号时，用appname+appaccount来生成，用以适应跨app的聊天场景
+        """
         return APPNAME + ":" + account
 
     def GetTempAccount(self):

@@ -14,16 +14,15 @@ __author__ = 'caimmy'
 
 from datetime import datetime
 from lib import SSWebRequestHandler
+from ssmain.workbench.linestatus import CustomerStatus
 
 class KeepliveWsHandler(SSWebRequestHandler):
     def open(self, *args, **kwargs):
-        print("on open")
+        CustomerStatus.CustomerOnlineStatus(self.db).setCustomerOnline(self.user)
 
     def on_message(self, message):
-        print("on message")
-        print(message)
-        print("_________________________")
-        self.write_message("echo : " + message)
+        # 更新心跳时间戳
+        CustomerStatus.CustomerOnlineStatus(self.db).beatCustomerOnline(self.user["id"])
 
     def on_close(self):
         print("on close")

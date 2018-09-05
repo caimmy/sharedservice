@@ -4,14 +4,10 @@
 File Name： __init__.py
 Description:
 Author: caimmy
-date： 2018/9/3
+date： 2018/9/4
 -------------------------------------------------
 Change Activity:
-2018/9/3
+2018/9/4
 -------------------------------------------------
 """
 __author__ = 'caimmy'
-
-MONGO_DB_NAME = "ss"
-
-COLLECTION_CUSTOMER_ONLINE = "online_customers"

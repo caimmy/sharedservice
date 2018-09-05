@@ -111,6 +111,9 @@
         var ws = new WebSocket(ws_keepalive);
         ws.onopen = function() {
            ws.send("Hello, world");
+           setInterval(function () {
+                ws.send("h");
+           }, 2000);
         };
         ws.onmessage = function (evt) {
            alert(evt.data);
