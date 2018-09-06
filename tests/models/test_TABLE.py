@@ -35,8 +35,8 @@ class MysqlTest(unittest.TestCase):
 
     def atest_CREATEENTERPRISE(self):
         ep = Enterprise()
-        ep.name = '西山居客服中心'
-        ep.email = 'caimiao@kingsoft.com'
+        ep.name = '客服'
+        ep.email = 'wokao@abc.com'
         ep.salt = 'adsf'
         ep.passwd = 'asdf'
         ep.validaion = '1'
@@ -45,7 +45,7 @@ class MysqlTest(unittest.TestCase):
 
     def atest_CREATEPRODUCTS(self):
         p = MProduct()
-        p.name = '西山居客服中心'
+        p.name = '客服'
         p.label = 'abcd1234'
         p.add_user = 1
         p.ep_id = 1
@@ -60,11 +60,11 @@ class MysqlTest(unittest.TestCase):
 
     def test_CREATEUSER(self):
         plat_u = PlatUser()
-        plat_u.phone = '15902811426'
+        plat_u.phone = '13328281234'
         plat_u.passwd = '1234'
         plat_u.salt = '1'
-        plat_u.name = 'caimmy'
-        plat_u.email = 'caimmy@qq.com'
+        plat_u.name = 'abc'
+        plat_u.email = 'zbc@qq.com'
         plat_u.ep = 1
         self.db.add(plat_u)
         self.db.commit()

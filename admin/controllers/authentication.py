@@ -61,8 +61,8 @@ class AdminlogoutRequestHandler(AdminWebRequestHandler):
 class RegisterRequestHandler(SSWebDataRequestHandler):
     def get(self):
         user = PlatUser()
-        user.name = '蔡淼'
-        user.phone = '15902811426'
+        user.name = 'caimmy'
+        user.phone = '15902812345'
         user.salt = '123456'
         user.passwd = 'aabbccdd'
         self.db.add(user)
