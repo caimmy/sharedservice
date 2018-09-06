@@ -20,7 +20,7 @@ from models import ENUM_VALID, ENUM_INVALID, ENUM_DELETE, USER_CREATE_METHOD_AUT
     USER_CREATE_METHOD_SYSTEM, ENUM_GENDER_FEMALE, ENUM_GENDER_MALE
 from models.mysql.tables import Enterprise
 from models import PasswordBase
-from const_defines import SIDE_ROLE_CUSTOMER, SIDE_ROLE_ENTERPRISE
+from const_defines import SIDE_ROLE_STAFF, SIDE_ROLE_ENTERPRISE
 
 class MProduct(Base):
     """
@@ -46,11 +46,11 @@ class MProduct(Base):
     def __repr__(self):
         return "<<m_product> id: {id}, name: {name}, label: {label} >".format(id=self.id, name=self.name, label=self.label)
 
-class Customer(Base, PasswordBase):
+class Staff(Base, PasswordBase):
     '''
     客服账号表
     '''
-    __tablename__   = 'custom_user'
+    __tablename__   = 'staff_user'
 
     id              = Column(Integer, primary_key=True, autoincrement=True)
     hashid          = Column(VARCHAR(128), nullable=False, unique=True, index=True, comment="哈希后的数据编号")
@@ -68,7 +68,7 @@ class Customer(Base, PasswordBase):
         获取用户模型的属性
         :return: dict
         '''
-        return {"id": self.id, "hashid": self.hashid, "name": self.name, "phone": self.phone, "gender": self.gender, "side": SIDE_ROLE_CUSTOMER}
+        return {"hashid": self.hashid, "name": self.name, "gender": self.gender, "side": SIDE_ROLE_STAFF}
 
     def __repr__(self):
         return '<<Table> Custom_user> : id: {id}, name: {name}, phone: {phone}, create_tm: {create_tm}'.format(
@@ -78,22 +78,22 @@ class Customer(Base, PasswordBase):
             create_tm=self.create_tm
         )
 
-class CustomerEnterpriseRel(Base):
+class StaffEnterpriseRel(Base):
     """
     客服和企业的关系表
     """
-    __tablename__       = "customer_enterprise_rel"
+    __tablename__       = "staff_enterprise_rel"
 
     id                  = Column(Integer, primary_key=True, autoincrement=True)
     ep_id               = Column(Integer, ForeignKey("enterprise.id"), comment="企业编号")
-    cm_id               = Column(Integer, ForeignKey("custom_user.id"), comment="客服编号")
+    cm_id               = Column(Integer, ForeignKey("staff_user.id"), comment="客服编号")
     product_id          = Column(Integer, index=True, default=0, comment="关联的产品编号")
     create_tm           = Column(DateTime, default=datetime.now(), comment="客服企业关系建立时间")
     create_method       = Column(Enum(USER_CREATE_METHOD_AUTO, USER_CREATE_METHOD_ENTERPRISE, USER_CREATE_METHOD_SYSTEM),
                                  default="auto", comment="创建本条关系的方式， auto客服自动申请创建， enterprise企业创建， system平台设置")
     uid                 = Column(Integer, comment="创建者")
 
-    customer            = relationship("Customer", foreign_keys=[cm_id], backref="ep_rel")
+    staff               = relationship("Staff", foreign_keys=[cm_id], backref="ep_rel")
 
 class ServiceRequirements(Base):
     """

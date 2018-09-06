@@ -15,11 +15,13 @@ __author__ = 'caimmy'
 from tornado.web import url
 import bp
 
-from papi.controllers.mimc_if import MimcTokenRefresh
+from papi.controllers.mimc_if import MimcTokenRefresh, MimcStatusChange
 from papi.controllers.keep_live import KeepliveWsHandler
 
 def CreateBlueprint():
     return bp.Blueprint(r"papi", [
         url(r"/mimc_token/?", MimcTokenRefresh, name="mimc_token_refresh"),
         url(r"/keepalive/?", KeepliveWsHandler, name="ws_keepalive"),                                # websocket reqeust handler
+
+        url(r"/runtime/chat_mimc_status/?", MimcStatusChange, name="runtimelog_mimc_status_change")
     ])

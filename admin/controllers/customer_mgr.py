@@ -17,30 +17,34 @@ import json
 from tornado.log import gen_log
 from admin import AdminWebRequestHandler
 from models.mysql.tables import Enterprise
-from models.mysql.enterprise_tbls import MProduct, Customer, CustomerEnterpriseRel
+from models.mysql.enterprise_tbls import MProduct, Staff, StaffEnterpriseRel
 from models import USER_CREATE_METHOD_ENTERPRISE
 from tornado_ui.ui_methods import flash, full_url
+from utils.wraps import web_admin_authenticate
 
 class CustomerIndex(AdminWebRequestHandler):
+    @web_admin_authenticate
     def get(self, *args, **kwargs):
-        customers = self.db.query(Customer).filter(Customer.id==CustomerEnterpriseRel.cm_id)\
-            .filter(CustomerEnterpriseRel.ep_id==self.user.get("ep")).all()
+        customers = self.db.query(Staff).filter(Staff.id == StaffEnterpriseRel.cm_id)\
+            .filter(StaffEnterpriseRel.ep_id == self.user.get("ep")).all()
         return self.render("customer_mgr/customer_index.html", breadcrumb=[],
                            customers=customers)
 
 class CustomerCreate(AdminWebRequestHandler):
+    @web_admin_authenticate
     def get(self, *args, **kwargs):
         enterprise = self.db.query(Enterprise).filter(Enterprise.id==self.user.get("ep")).one()
         products_list = MProduct.allEnabledProducts(self.db, self.user.get("ep"))
         return self.render("customer_mgr/customer_create.html", breadcrumb=[],
                            enterprise=enterprise, products=products_list)
 
+    @web_admin_authenticate
     def post(self, *args, **kwargs):
         ep, name, phone, pwd, status, products = \
             self.getArgument_list("ep", "name", "phone", "pwd", "status", "bind_products[]")
         if all((ep, name, phone, pwd, status)):
             try:
-                user = Customer()
+                user = Staff()
                 salt, password = user.genPassword(pwd)
                 user.name = name
                 user.phone = phone
@@ -51,7 +55,7 @@ class CustomerCreate(AdminWebRequestHandler):
                 user.create_platuid = self.user.get("id")
                 self.db.add(user)
                 self.db.flush()
-                user_enterprise_rel = CustomerEnterpriseRel()
+                user_enterprise_rel = StaffEnterpriseRel()
                 user_enterprise_rel.ep_id = self.user.get("ep")
                 user_enterprise_rel.cm_id = user.id
                 user_enterprise_rel.product_id = 0
@@ -60,7 +64,7 @@ class CustomerCreate(AdminWebRequestHandler):
                 user_enterprise_rel.uid = self.user.get("id")
                 self.db.add(user_enterprise_rel)
                 for p in products:
-                    uer = CustomerEnterpriseRel()
+                    uer = StaffEnterpriseRel()
                     uer.ep_id = user_enterprise_rel.ep_id
                     uer.cm_id = user.id
                     uer.product_id = p
@@ -80,10 +84,11 @@ class CustomerCreate(AdminWebRequestHandler):
 
 
 class CustomerDetail(AdminWebRequestHandler):
+    @web_admin_authenticate
     def get(self, *args, **kwargs):
         cid, = self.getArgument_list("cid")
         if cid:
-            customer = self.db.query(Customer).filter(Customer.id==int(cid)).one()
+            customer = self.db.query(Staff).filter(Staff.id == int(cid)).one()
             ep_rels_list = customer.ep_rel
 
             return self.render("customer_mgr/customer_detail.html", breadcrumb=[],
@@ -93,6 +98,7 @@ class CustomerDetail(AdminWebRequestHandler):
             flash(self, "cid not provide")
         return self.redirect(self.reverse_url("customer_index"))
 
+    @web_admin_authenticate
     def post(self, *args, **kwargs):
         cid, = self.getArgument_list("cid")
         uid, name, phone, pwd, status, products = \
@@ -102,7 +108,7 @@ class CustomerDetail(AdminWebRequestHandler):
         if all((uid, name, phone, status, products)):
             products = [int(p) for p in products]
             try:
-                customer = self.db.query(Customer).filter(Customer.id==uid).one()
+                customer = self.db.query(Staff).filter(Staff.id == uid).one()
                 customer.name = name
                 customer.phone = phone
                 if "" != pwd:
@@ -116,7 +122,7 @@ class CustomerDetail(AdminWebRequestHandler):
                         customer.ep_rel.remove(cur_rel)
                         self.db.delete(cur_rel)
                 for p in products:
-                    uer = CustomerEnterpriseRel()
+                    uer = StaffEnterpriseRel()
                     uer.ep_id = ep_id
                     uer.cm_id = customer.id
                     uer.product_id = p

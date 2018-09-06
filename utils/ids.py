@@ -18,7 +18,9 @@ from hashids import Hashids
 from const_defines import HASHIDS_SALT
 
 def generateUUID():
-    return str(uuid1())
+    ori_uuid = str(uuid1())
+    _uuid = ori_uuid[: ori_uuid.rfind("-")]
+    return _uuid if len(_uuid) > 0 else ori_uuid
 
 def hash_ids(id):
     """
@@ -41,9 +43,6 @@ def unhash_ids(code):
 
 if "__main__" == __name__:
 
-    m = hash_ids(5)
-    print(m)
-
-    n = unhash_ids(m)
-    print(n)
+    for i in range (1, 5):
+        print(generateUUID())
 

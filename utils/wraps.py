@@ -15,7 +15,7 @@ import json
 import functools
 from lib import makeResponse
 from utils import ensureBytes, ensureString
-from const_defines import SIDE_ROLE_ENTERPRISE, SIDE_ROLE_CUSTOMER
+from const_defines import SIDE_ROLE_ENTERPRISE, SIDE_ROLE_STAFF
 
 def request_authenticate(method):
     '''
@@ -32,7 +32,7 @@ def request_authenticate(method):
         self.write(json.dumps(makeResponse('login first please')))
     return check_authentication
 
-def web_authenticate(method):
+def web_admin_authenticate(method):
     '''
     web请求方式中判定用户是否登录，如未登陆则自动跳转默认登录地址
     :param method:
@@ -55,7 +55,7 @@ def web_customer_login(method):
     def check_authentication(self, *args, **kwargs):
         if self.current_user:
             user_info = self.session.get("user")
-            if user_info and user_info["side"] == SIDE_ROLE_CUSTOMER:
+            if user_info and user_info["side"] == SIDE_ROLE_STAFF:
                 return method(self, *args, **kwargs)
         return self.redirect(self.reverse_url('customer_frontpage_login'))
 

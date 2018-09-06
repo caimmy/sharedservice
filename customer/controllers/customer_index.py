@@ -18,7 +18,7 @@ from tornado.log import gen_log
 from customer import CustomerWebRequestHandler
 from tornado_ui.ui_methods import flash
 
-from models.mysql.enterprise_tbls import Customer
+from models.mysql.enterprise_tbls import Staff
 from utils.wraps import web_customer_login
 from utils.ids import hash_ids
 
@@ -39,8 +39,8 @@ class CustomerRegister(CustomerWebRequestHandler):
         username, gender, phone, code = self.getArgument_list("username", "gender", "phone", "code")
         if all((username, gender, phone, code)):
             try:
-                if self.db.query(~exists().where(Customer.phone==phone)).scalar():
-                    customer = Customer()
+                if self.db.query(~exists().where(Staff.phone == phone)).scalar():
+                    customer = Staff()
                     s, p = customer.genPassword(code)
                     customer.name = username
                     customer.phone = phone
@@ -65,17 +65,17 @@ class CustomerRegister(CustomerWebRequestHandler):
 
 class CustomerLogin(CustomerWebRequestHandler):
     def get(self, *args, **kwargs):
-        from const_defines import SIDE_ROLE_CUSTOMER
+        from const_defines import SIDE_ROLE_STAFF
         if self.current_user:
             user_info = self.session.get("user")
-            if user_info and user_info["side"] == SIDE_ROLE_CUSTOMER:
+            if user_info and user_info["side"] == SIDE_ROLE_STAFF:
                 return self.redirect(self.reverse_url("customer_frontpage_dashboard"))
         return self.render("frontpage/customer_login.html")
 
     def post(self, *args, **kwargs):
         phone, pwd = self.getArgument_list("phone", "pwd")
         if all((phone, pwd)):
-            customer_user = self.db.query(Customer).filter(Customer.phone==phone).first()
+            customer_user = self.db.query(Staff).filter(Staff.phone == phone).first()
             if customer_user and customer_user.checkPassword(pwd):
                 self.Login(customer_user.getAttributes())
                 return self.redirect(self.reverse_url("customer_frontpage_dashboard"))

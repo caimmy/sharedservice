@@ -15,6 +15,7 @@ __author__ = 'caimmy'
 from datetime import datetime
 from lib import SSWebRequestHandler
 from ssmain.workbench.linestatus import CustomerStatus
+from utils.ids import unhash_ids
 
 class KeepliveWsHandler(SSWebRequestHandler):
     def open(self, *args, **kwargs):
@@ -22,13 +23,18 @@ class KeepliveWsHandler(SSWebRequestHandler):
 
     def on_message(self, message):
         # 更新心跳时间戳
-        CustomerStatus.CustomerOnlineStatus(self.db).beatCustomerOnline(self.user["id"])
+        user_id = unhash_ids(self.user["hashid"])
+        CustomerStatus.CustomerOnlineStatus(self.db).beatCustomerOnline(user_id)
 
     def on_close(self):
         print("on close")
+        user_id = unhash_ids(self.user["hashid"])
+        CustomerStatus.CustomerOnlineStatus(self.db).removeCustomerOnline(user_id)
 
     def on_connection_close(self):
         print("connection close")
+        user_id = unhash_ids(self.user["hashid"])
+        CustomerStatus.CustomerOnlineStatus(self.db).removeCustomerOnline(user_id)
 
     def on_ping(self, data):
         print("ping : " + str(data))

@@ -12,28 +12,9 @@ Change Activity:
 """
 __author__ = 'caimmy'
 
-import json
+from models.mongodb import _MongoData
 
-class _MongoData():
-    def extraData(self):
-        """
-        抽取mongodb的数据实例
-        """
-        mongo_data = {}
-        for v in vars(self).items():
-            if v[1] != None:
-                mongo_data.setdefault(v[0], v[1])
-        return mongo_data
-
-    def fillData(self, data):
-        """
-        填充mongodb的数据实例
-        """
-        for _k in data:
-            if hasattr(self, _k):
-                setattr(self, _k, data[_k])
-
-class CustomerOnLineData(_MongoData):
+class StaffOnLineData(_MongoData):
     user_id         = None         # 客服编号
     hashid          = None         # 客服hash编号
     online_time     = None         # 客服上线时间
@@ -45,6 +26,3 @@ class CustomerOnLineData(_MongoData):
     def __init__(self, user_id, hashid):
         self.user_id = user_id
         self.hashid = hashid
-
-    def __repr__(self):
-        return json.dumps(self.extraData())

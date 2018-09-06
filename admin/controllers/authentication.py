@@ -14,7 +14,7 @@ __author__ = 'caimmy'
 
 import tornado.log
 from lib import SSWebDataRequestHandler
-from utils.wraps import web_authenticate, jsonp
+from utils.wraps import web_admin_authenticate, jsonp
 from models.mysql.tables import PlatUser
 from admin import AdminWebRequestHandler
 from tornado_ui.ui_methods import flash, enterprise_had_login
@@ -93,7 +93,7 @@ class ResetPasswordRequestHandler(AdminWebRequestHandler):
         return self.render("profile/personsetting.html")
 
 class IndexRequestHandler(AdminWebRequestHandler):
-    @web_authenticate
+    @web_admin_authenticate
     def get(self):
         breadcrumb = {
             "title": [

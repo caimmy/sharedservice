@@ -113,10 +113,10 @@
            ws.send("Hello, world");
            setInterval(function () {
                 ws.send("h");
-           }, 2000);
+           }, 30000);
         };
         ws.onmessage = function (evt) {
-           alert(evt.data);
+           console.log(evt.data);
         };
     }());
 </script>

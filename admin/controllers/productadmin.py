@@ -18,10 +18,12 @@ from sqlalchemy import and_
 
 from admin import AdminWebRequestHandler
 from models.mysql.enterprise_tbls import MProduct
-from tornado_ui.ui_methods import flash
-from utils.ids import generateUUID
+from tornado_ui.ui_methods import flash, full_url
+from utils.ids import generateUUID, hash_ids
+from utils.wraps import web_admin_authenticate
 
 class ProductIndex(AdminWebRequestHandler):
+    @web_admin_authenticate
     def get(self):
         breadcrumb = {
             "title": ["业务管理", "产品"],
@@ -37,6 +39,7 @@ class ProductIndex(AdminWebRequestHandler):
                            products=products_list)
 
 class ProductCreate(AdminWebRequestHandler):
+    @web_admin_authenticate
     def get(self):
         breadcrumb = {
             "title": ["业务管理", "产品"],
@@ -49,6 +52,7 @@ class ProductCreate(AdminWebRequestHandler):
         }
         return self.render("products_mgr/create_product.html", breadcrumb=breadcrumb)
 
+    @web_admin_authenticate
     def post(self):
         name, desc = self.getArgument_list("pname", "pdesc")
         if all((name, desc)):
@@ -70,9 +74,11 @@ class ProductCreate(AdminWebRequestHandler):
         return self.redirect(self.reverse_url("product_create"))
 
 class ProductConfig(AdminWebRequestHandler):
+    @web_admin_authenticate
     def get(self, *args, **kwargs):
         pid, = self.getArgument_list("pid")
         product = self.db.query(MProduct).filter(and_(MProduct.id==pid), MProduct.ep_id==self.user.get("ep")).one()
 
         return self.render("products_mgr/product_configure.html", breadcrumb=[],
-                           product=product)
+                           product=product,
+                           chatapi=full_url(self, "text_service_proxy_url", {"eid": hash_ids(product.ep_id), "pid": hash_ids(product.id)}, absolute=True))

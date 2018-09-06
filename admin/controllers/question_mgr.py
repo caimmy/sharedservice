@@ -17,11 +17,13 @@ from tornado.log import gen_log
 from admin import AdminWebRequestHandler
 from models.mysql.enterprise_tbls import Enterprise, MProduct, ProductQuestion, ProductQuestionRel
 from tornado_ui.ui_methods import flash
+from utils.wraps import web_admin_authenticate
 
 class QuestionIndex(AdminWebRequestHandler):
     """
     问答管理索引页
     """
+    @web_admin_authenticate
     def get(self, *args, **kwargs):
         ep_id = self.user.get("ep")
         questions = self.db.query(ProductQuestion).filter(ProductQuestion.id==ProductQuestionRel.question_id).\
@@ -32,6 +34,7 @@ class QuestionCreate(AdminWebRequestHandler):
     """
     创建问答
     """
+    @web_admin_authenticate
     def get(self, *args, **kwargs):
         ep_id = self.user.get("ep")
         enterprise = self.db.query(Enterprise).filter(Enterprise.id == ep_id).one()
@@ -40,6 +43,7 @@ class QuestionCreate(AdminWebRequestHandler):
         return self.render("question_mgr/question_create.html", breadcrumb=[],
                            enterprise=enterprise, products=products)
 
+    @web_admin_authenticate
     def post(self, *args, **kwargs):
         question, answer, atype, products = self.getArgument_list("question", "answer", "atype", "bind_products[]")
         if all((question, answer, atype, products)):

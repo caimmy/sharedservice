@@ -14,7 +14,7 @@ __author__ = 'caimmy'
 
 from tornado.web import url
 import bp
-from userinterface.ui_index import TextserviceRequestHandler
+from userinterface.controllers.ui_index import TextserviceRequestHandler
 
 def CreateBlueprint():
     return bp.Blueprint(r"ui", [
